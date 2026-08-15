@@ -5,9 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abdullah Ahmed Bhatti</title>
 <meta name="description" content="Abdullah Ahmed Bhatti, Computer Engineer. AI, computer vision, and hardware systems.">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+
 <style>
   :root{
     --bg: #10141b;
@@ -25,414 +27,1434 @@
     --hl-cyan: rgba(45,212,212,0.13);
     --hl-red: rgba(239,68,68,0.20);
   }
-  *{ box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
-  body{
-    margin:0; background: var(--bg); color: var(--text);
-    font-family: 'JetBrains Mono', monospace; font-size:15px; line-height:1.7;
-  }
-  a{ color: var(--cyan); text-decoration:none; }
-  ::selection{ background: var(--cyan); color: #05171a; }
-  :focus-visible{ outline: 1.5px solid var(--cyan); outline-offset: 2px; }
-  ::-webkit-scrollbar{ width:11px; }
-  ::-webkit-scrollbar-track{ background: var(--bg); }
-  ::-webkit-scrollbar-thumb{ background: var(--rule); border-radius:6px; border:2px solid var(--bg); }
-  ::-webkit-scrollbar-thumb:hover{ background: var(--line-num); }
 
-  .page{ max-width: 760px; margin:0 auto; }
+  *{
+    box-sizing:border-box;
+  }
+
+  html{
+    scroll-behavior:smooth;
+  }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size:15px;
+    line-height:1.7;
+  }
+
+  a{
+    color: var(--cyan);
+    text-decoration:none;
+  }
+
+  ::selection{
+    background: var(--cyan);
+    color: #05171a;
+  }
+
+  :focus-visible{
+    outline: 1.5px solid var(--cyan);
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar{
+    width:11px;
+  }
+
+  ::-webkit-scrollbar-track{
+    background: var(--bg);
+  }
+
+  ::-webkit-scrollbar-thumb{
+    background: var(--rule);
+    border-radius:6px;
+    border:2px solid var(--bg);
+  }
+
+  ::-webkit-scrollbar-thumb:hover{
+    background: var(--line-num);
+  }
+
+  .page{
+    max-width: 760px;
+    margin:0 auto;
+  }
 
   /* title bar, like an editor window chrome */
+
   .titlebar{
-    background: var(--bg-tab); border-bottom:1px solid var(--rule);
-    display:flex; align-items:center; padding: 10px 18px; gap:14px;
-    position: sticky; top:0; z-index:20;
+    background: var(--bg-tab);
+    border-bottom:1px solid var(--rule);
+    display:flex;
+    align-items:center;
+    padding: 10px 18px;
+    gap:14px;
+    position: sticky;
+    top:0;
+    z-index:20;
   }
-  .dots{ display:flex; gap:7px; flex-shrink:0; }
-  .dot{ width:11px; height:11px; border-radius:50%; }
-  .dot.red{ background:#ef4444; } .dot.yellow{ background:#eab308; } .dot.green{ background:#22c55e; }
+
+  .dots{
+    display:flex;
+    gap:7px;
+    flex-shrink:0;
+  }
+
+  .dot{
+    width:11px;
+    height:11px;
+    border-radius:50%;
+  }
+
+  .dot.red{
+    background:#ef4444;
+  }
+
+  .dot.yellow{
+    background:#eab308;
+  }
+
+  .dot.green{
+    background:#22c55e;
+  }
+
   .titlebar .filename{
-    flex:1; text-align:center; font-size:12.5px; color: var(--text-dim);
+    flex:1;
+    text-align:center;
+    font-size:12.5px;
+    color: var(--text-dim);
   }
-  .titlebar .clock{ font-size:11.5px; color: var(--text-faint); white-space:nowrap; }
+
+  .titlebar .clock{
+    font-size:11.5px;
+    color: var(--text-faint);
+    white-space:nowrap;
+  }
 
   /* tab strip nav */
+
   .tabstrip{
-    display:flex; overflow-x:auto; background: var(--bg-tab); border-bottom:1px solid var(--rule);
-    position: sticky; top:41px; z-index:19;
+    display:flex;
+    overflow-x:auto;
+    background: var(--bg-tab);
+    border-bottom:1px solid var(--rule);
+    position: sticky;
+    top:41px;
+    z-index:19;
   }
+
   .tab{
-    padding: 11px 18px; font-size:12.5px; color: var(--text-faint);
-    border-right:1px solid var(--rule); white-space:nowrap; transition: color .15s ease, background .15s ease;
+    padding: 11px 18px;
+    font-size:12.5px;
+    color: var(--text-faint);
+    border-right:1px solid var(--rule);
+    white-space:nowrap;
+    transition: color .15s ease, background .15s ease;
     border-bottom: 2px solid transparent;
   }
-  .tab:hover{ color: var(--text); background: rgba(255,255,255,0.02); }
-  .tab.active{ color: var(--cyan); border-bottom-color: var(--cyan); background: var(--bg); }
 
-  .content{ padding: 44px 22px 90px; }
+  .tab:hover{
+    color: var(--text);
+    background: rgba(255,255,255,0.02);
+  }
 
-  /* generic code-block with line-number gutter (CSS counters) */
+  .tab.active{
+    color: var(--cyan);
+    border-bottom-color: var(--cyan);
+    background: var(--bg);
+  }
+
+  .content{
+    padding: 44px 22px 90px;
+  }
+
+  /* generic code-block with line-number gutter */
+
   .code-block{
-    background: var(--bg-panel); border:1px solid var(--rule); border-radius:6px;
-    overflow:hidden; counter-reset: line; margin: 0 0 18px;
+    background: var(--bg-panel);
+    border:1px solid var(--rule);
+    border-radius:6px;
+    overflow:hidden;
+    counter-reset: line;
+    margin: 0 0 18px;
   }
+
   .cline{
-    counter-increment: line; display:flex; align-items:flex-start;
-    padding: 7px 16px 7px 0; border-bottom:1px solid rgba(255,255,255,0.03);
+    counter-increment: line;
+    display:flex;
+    align-items:flex-start;
+    padding: 7px 16px 7px 0;
+    border-bottom:1px solid rgba(255,255,255,0.03);
   }
-  .cline:last-child{ border-bottom:none; }
+
+  .cline:last-child{
+    border-bottom:none;
+  }
+
   .cline::before{
-    content: counter(line); width:34px; flex-shrink:0; text-align:right; margin-right:16px;
-    color: var(--line-num); font-size:12px; user-select:none; padding-top:1px;
+    content: counter(line);
+    width:34px;
+    flex-shrink:0;
+    text-align:right;
+    margin-right:16px;
+    color: var(--line-num);
+    font-size:12px;
+    user-select:none;
+    padding-top:1px;
   }
-  .cline.hl-cyan{ background: var(--hl-cyan); }
-  .cline.hl-red{ background: var(--hl-red); }
-  .cline .txt{ flex:1; word-break:break-word; }
-  .c-comment{ color: var(--green); }
-  .c-key{ color: var(--cyan); }
-  .c-str{ color: var(--yellow); }
-  .c-punc{ color: var(--text-faint); }
-  .c-text{ color: var(--text); }
+
+  .cline.hl-cyan{
+    background: var(--hl-cyan);
+  }
+
+  .cline.hl-red{
+    background: var(--hl-red);
+  }
+
+  .cline .txt{
+    flex:1;
+    word-break:break-word;
+  }
+
+  .c-comment{
+    color: var(--green);
+  }
+
+  .c-key{
+    color: var(--cyan);
+  }
+
+  .c-str{
+    color: var(--yellow);
+  }
+
+  .c-punc{
+    color: var(--text-faint);
+  }
+
+  .c-text{
+    color: var(--text);
+  }
 
   /* hero */
-  .hero{ margin-bottom: 20px; }
+
+  .hero{
+    margin-bottom: 20px;
+  }
+
   .cursor{
-    display:inline-block; width:8px; height:1em; background: var(--cyan);
-    vertical-align: text-bottom; margin-left:2px; animation: blink 1s step-end infinite;
+    display:inline-block;
+    width:8px;
+    height:1em;
+    background: var(--cyan);
+    vertical-align: text-bottom;
+    margin-left:2px;
+    animation: blink 1s step-end infinite;
   }
-  @keyframes blink{ 50%{ opacity:0; } }
-  @media (prefers-reduced-motion: reduce){ .cursor{ animation:none; } }
 
-  .hero-row{ display:flex; gap:28px; align-items:flex-start; flex-wrap:wrap; margin-top:22px; }
-  .hero-text{ flex:1 1 340px; min-width:280px; }
-  .lede{ color: var(--text-dim); font-size:14.5px; max-width:60ch; margin: 0 0 14px; }
-  .lede em{ color: var(--text); font-style:normal; }
+  @keyframes blink{
+    50%{
+      opacity:0;
+    }
+  }
 
-  .cta-row{ display:flex; gap:12px; flex-wrap:wrap; margin: 24px 0 6px; }
+  @media (prefers-reduced-motion: reduce){
+    .cursor{
+      animation:none;
+    }
+  }
+
+  .hero-row{
+    display:flex;
+    gap:28px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    margin-top:22px;
+  }
+
+  .hero-text{
+    flex:1 1 340px;
+    min-width:280px;
+  }
+
+  .lede{
+    color: var(--text-dim);
+    font-size:14.5px;
+    max-width:60ch;
+    margin: 0 0 14px;
+  }
+
+  .lede em{
+    color: var(--text);
+    font-style:normal;
+  }
+
+  .cta-row{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin: 24px 0 6px;
+  }
+
   .btn{
-    font-family:'JetBrains Mono',monospace; font-size:13px; padding:11px 20px; border-radius:4px;
-    border:1px solid var(--cyan); transition: all .15s ease; display:inline-block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    padding:11px 20px;
+    border-radius:4px;
+    border:1px solid var(--cyan);
+    transition: all .15s ease;
+    display:inline-block;
   }
-  .btn-fill{ background: var(--cyan); color:#052226; font-weight:700; }
-  .btn-fill:hover{ background:#4fe6e6; }
-  .btn-stroke{ color: var(--cyan); border-color: var(--rule); }
-  .btn-stroke:hover{ border-color: var(--cyan); background: var(--hl-cyan); }
 
-  .contact-list{ margin-top:24px; font-size:12.5px; color: var(--text-faint); display:flex; flex-wrap:wrap; gap:6px 0; }
-  .contact-list a{ color: var(--text-dim); border-bottom:1px dotted var(--rule); }
-  .contact-list a:hover{ color: var(--cyan); border-color: var(--cyan); }
-  .sep{ margin:0 10px; color: var(--text-faint); }
+  .btn-fill{
+    background: var(--cyan);
+    color:#052226;
+    font-weight:700;
+  }
+
+  .btn-fill:hover{
+    background:#4fe6e6;
+  }
+
+  .btn-stroke{
+    color: var(--cyan);
+    border-color: var(--rule);
+  }
+
+  .btn-stroke:hover{
+    border-color: var(--cyan);
+    background: var(--hl-cyan);
+  }
+
+  .contact-list{
+    margin-top:24px;
+    font-size:12.5px;
+    color: var(--text-faint);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 0;
+  }
+
+  .contact-list a{
+    color: var(--text-dim);
+    border-bottom:1px dotted var(--rule);
+  }
+
+  .contact-list a:hover{
+    color: var(--cyan);
+    border-color: var(--cyan);
+  }
+
+  .sep{
+    margin:0 10px;
+    color: var(--text-faint);
+  }
 
   /* portrait: viewfinder style */
+
   .portrait-frame{
-    width:144px; height:144px; flex-shrink:0; position:relative; border:1px dashed var(--rule);
-    background: var(--bg-panel); margin-top:4px;
+    width:144px;
+    height:144px;
+    flex-shrink:0;
+    position:relative;
+    border:1px dashed var(--rule);
+    background: var(--bg-panel);
+    margin-top:4px;
   }
-  .portrait-frame::before, .portrait-frame::after,
-  .portrait-frame .c2, .portrait-frame .c3{
-    content:""; position:absolute; width:14px; height:14px; border-color: var(--cyan); border-style:solid; border-width:0;
+
+  .portrait-frame::before,
+  .portrait-frame::after,
+  .portrait-frame .c2,
+  .portrait-frame .c3{
+    content:"";
+    position:absolute;
+    width:14px;
+    height:14px;
+    border-color: var(--cyan);
+    border-style:solid;
+    border-width:0;
   }
-  .portrait-frame::before{ top:-1px; left:-1px; border-top-width:2px; border-left-width:2px; }
-  .portrait-frame::after{ bottom:-1px; right:-1px; border-bottom-width:2px; border-right-width:2px; }
-  .portrait-frame .c2{ top:-1px; right:-1px; border-top-width:2px; border-right-width:2px; }
-  .portrait-frame .c3{ bottom:-1px; left:-1px; border-bottom-width:2px; border-left-width:2px; }
-  .portrait-label{ position:absolute; top:-20px; left:0; font-size:10.5px; color: var(--green); }
-  .portrait-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .portrait-frame.empty img{ display:none; }
+
+  .portrait-frame::before{
+    top:-1px;
+    left:-1px;
+    border-top-width:2px;
+    border-left-width:2px;
+  }
+
+  .portrait-frame::after{
+    bottom:-1px;
+    right:-1px;
+    border-bottom-width:2px;
+    border-right-width:2px;
+  }
+
+  .portrait-frame .c2{
+    top:-1px;
+    right:-1px;
+    border-top-width:2px;
+    border-right-width:2px;
+  }
+
+  .portrait-frame .c3{
+    bottom:-1px;
+    left:-1px;
+    border-bottom-width:2px;
+    border-left-width:2px;
+  }
+
+  .portrait-label{
+    position:absolute;
+    top:-20px;
+    left:0;
+    font-size:10.5px;
+    color: var(--green);
+  }
+
+  .portrait-frame img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  .portrait-frame.empty img{
+    display:none;
+  }
+
   .portrait-placeholder{
-    display:none; width:100%; height:100%; align-items:center; justify-content:center; text-align:center;
-    font-size:10px; line-height:1.5; color: var(--text-faint); padding:10px;
+    display:none;
+    width:100%;
+    height:100%;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:10px;
+    line-height:1.5;
+    color: var(--text-faint);
+    padding:10px;
   }
-  .portrait-frame.empty .portrait-placeholder{ display:flex; }
+
+  .portrait-frame.empty .portrait-placeholder{
+    display:flex;
+  }
 
   /* sections */
-  section{ margin: 56px 0; scroll-margin-top: 90px; }
-  .s-head{ display:flex; align-items:baseline; gap:12px; margin: 0 0 20px; }
-  .s-head .num{ color: var(--text-faint); font-size:13px; }
-  .s-head .title{ font-weight:700; font-size:18px; color: var(--text); }
-  .s-head .title::before{ content:"# "; color: var(--text-faint); }
+
+  section{
+    margin: 56px 0;
+    scroll-margin-top: 90px;
+  }
+
+  .s-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin: 0 0 20px;
+  }
+
+  .s-head .num{
+    color: var(--text-faint);
+    font-size:13px;
+  }
+
+  .s-head .title{
+    font-weight:700;
+    font-size:18px;
+    color: var(--text);
+  }
+
+  .s-head .title::before{
+    content:"# ";
+    color: var(--text-faint);
+  }
 
   /* experience function block */
-  .fn-line{ color: var(--text); }
-  .fn-line .c-key{ color:#c792ea; }
-  .indent{ padding-left:20px; }
+
+  .fn-line{
+    color: var(--text);
+  }
+
+  .fn-line .c-key{
+    color:#c792ea;
+  }
+
+  .indent{
+    padding-left:20px;
+  }
 
   /* featured project object */
+
   .proj-featured .s-tag{
-    font-size:11px; color: var(--cyan); border:1px solid var(--rule); border-radius:3px;
-    padding:2px 8px; margin-bottom:10px; display:inline-block;
+    font-size:11px;
+    color: var(--cyan);
+    border:1px solid var(--rule);
+    border-radius:3px;
+    padding:2px 8px;
+    margin-bottom:10px;
+    display:inline-block;
   }
 
   /* lighter projects */
+
   .proj-lite{
-    background: var(--bg-panel); border:1px solid var(--rule); border-radius:6px;
-    padding: 16px 18px; margin-bottom:12px;
+    background: var(--bg-panel);
+    border:1px solid var(--rule);
+    border-radius:6px;
+    padding: 16px 18px;
+    margin-bottom:12px;
   }
-  .proj-lite-title{ color: var(--text); font-weight:700; font-size:14.5px; margin-bottom:8px; }
-  .proj-lite-title .punc{ color: var(--cyan); margin-right:6px; }
-  .proj-lite-desc{ color: var(--text-dim); font-size:13.5px; margin:0 0 10px; }
-  .proj-lite-stack{ font-size:12.5px; color: var(--green); }
+
+  .proj-lite-title{
+    color: var(--text);
+    font-weight:700;
+    font-size:14.5px;
+    margin-bottom:8px;
+  }
+
+  .proj-lite-title .punc{
+    color: var(--cyan);
+    margin-right:6px;
+  }
+
+  .proj-lite-desc{
+    color: var(--text-dim);
+    font-size:13.5px;
+    margin:0 0 10px;
+  }
+
+  .proj-lite-stack{
+    font-size:12.5px;
+    color: var(--green);
+  }
 
   /* skills as syntax-highlighted arrays */
-  .skill-line{ margin-bottom:10px; font-size:13.5px; }
-  .skill-line .k{ color: var(--cyan); }
-  .skill-line .p{ color: var(--text-faint); }
-  .skill-line .v{ color: var(--yellow); }
+
+  .skill-line{
+    margin-bottom:10px;
+    font-size:13.5px;
+  }
+
+  .skill-line .k{
+    color: var(--cyan);
+  }
+
+  .skill-line .p{
+    color: var(--text-faint);
+  }
+
+  .skill-line .v{
+    color: var(--yellow);
+  }
 
   /* education */
-  .edu{ display:flex; justify-content:space-between; gap:14px; padding:12px 0; border-bottom:1px solid var(--rule); flex-wrap:wrap; }
-  .edu:last-child{ border-bottom:none; }
-  .edu-name{ color: var(--text); font-weight:700; font-size:14px; }
-  .edu-school{ color: var(--text-dim); font-size:12.5px; margin-top:3px; }
-  .edu-date{ color: var(--text-faint); font-size:12px; white-space:nowrap; }
+
+  .edu{
+    display:flex;
+    justify-content:space-between;
+    gap:14px;
+    padding:12px 0;
+    border-bottom:1px solid var(--rule);
+    flex-wrap:wrap;
+  }
+
+  .edu:last-child{
+    border-bottom:none;
+  }
+
+  .edu-name{
+    color: var(--text);
+    font-weight:700;
+    font-size:14px;
+  }
+
+  .edu-school{
+    color: var(--text-dim);
+    font-size:12.5px;
+    margin-top:3px;
+  }
+
+  .edu-date{
+    color: var(--text-faint);
+    font-size:12px;
+    white-space:nowrap;
+  }
 
   /* two col */
-  .cols{ display:grid; grid-template-columns:1fr 1fr; gap:32px; }
-  @media (max-width:600px){ .cols{ grid-template-columns:1fr; gap:36px; } }
-  ul.dash{ list-style:none; margin:0; padding:0; }
-  ul.dash li{ padding:7px 0; color: var(--text-dim); font-size:13.5px; }
-  ul.dash li .c-comment{ margin-right:6px; }
+
+  .cols{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:32px;
+  }
+
+  @media (max-width:600px){
+    .cols{
+      grid-template-columns:1fr;
+      gap:36px;
+    }
+  }
+
+  ul.dash{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+
+  ul.dash li{
+    padding:7px 0;
+    color: var(--text-dim);
+    font-size:13.5px;
+  }
+
+  ul.dash li .c-comment{
+    margin-right:6px;
+  }
 
   /* footer terminal */
-  footer{ margin-top:70px; border-top:1px solid var(--rule); padding-top:34px; }
-  .term{ background: var(--bg-panel); border:1px solid var(--rule); border-radius:6px; padding:18px 20px; font-size:13.5px; }
-  .term .ln{ margin-bottom:6px; }
-  .term .prompt{ color: var(--cyan); margin-right:8px; }
-  .term .out{ color: var(--text-dim); }
+
+  footer{
+    margin-top:70px;
+    border-top:1px solid var(--rule);
+    padding-top:34px;
+  }
+
+  .term{
+    background: var(--bg-panel);
+    border:1px solid var(--rule);
+    border-radius:6px;
+    padding:18px 20px;
+    font-size:13.5px;
+  }
+
+  .term .ln{
+    margin-bottom:6px;
+  }
+
+  .term .prompt{
+    color: var(--cyan);
+    margin-right:8px;
+  }
+
+  .term .out{
+    color: var(--text-dim);
+  }
 
   @media (max-width:560px){
-    .content{ padding: 34px 16px 70px; }
-    .titlebar{ padding:10px 12px; }
+    .content{
+      padding: 34px 16px 70px;
+    }
+
+    .titlebar{
+      padding:10px 12px;
+    }
   }
 </style>
 </head>
+
 <body>
+
 <div class="page">
 
   <div class="titlebar">
-    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-    <div class="filename">abdullah.cpp · portfolio</div>
+    <div class="dots">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+    </div>
+
+    <div class="filename">
+      abdullah.cpp · portfolio
+    </div>
+
     <div class="clock mono" id="localTime"></div>
   </div>
 
+
   <div class="tabstrip">
-    <a href="#experience" class="tab active">experience.cpp</a>
-    <a href="#projects" class="tab">projects.cpp</a>
-    <a href="#skills" class="tab">skills.h</a>
-    <a href="#education" class="tab">education.md</a>
-    <a href="#contact" class="tab">contact.sh</a>
+
+    <a href="#experience" class="tab active">
+      experience.cpp
+    </a>
+
+    <a href="#projects" class="tab">
+      projects.cpp
+    </a>
+
+    <a href="#skills" class="tab">
+      skills.h
+    </a>
+
+    <a href="#education" class="tab">
+      education.md
+    </a>
+
+    <a href="#contact" class="tab">
+      contact.sh
+    </a>
+
   </div>
+
 
   <div class="content">
 
     <section class="hero">
+
       <div class="code-block">
-        <div class="cline"><span class="txt c-comment">/**</span></div>
-        <div class="cline"><span class="txt c-comment">&nbsp;* Abdullah Ahmed Bhatti</span></div>
-        <div class="cline"><span class="txt c-comment">&nbsp;* Computer Engineer: AI systems and embedded hardware</span></div>
-        <div class="cline hl-cyan"><span class="txt c-comment">&nbsp;* Based in Rawalpindi and Islamabad, Pakistan</span></div>
-        <div class="cline"><span class="txt c-comment">&nbsp;*/</span></div>
+
+        <div class="cline">
+          <span class="txt c-comment">/**</span>
+        </div>
+
+        <div class="cline">
+          <span class="txt c-comment">
+            &nbsp;* Abdullah Ahmed Bhatti
+          </span>
+        </div>
+
+        <div class="cline">
+          <span class="txt c-comment">
+            &nbsp;* Computer Engineer: AI systems and embedded hardware
+          </span>
+        </div>
+
+        <div class="cline hl-cyan">
+          <span class="txt c-comment">
+            &nbsp;* Based in Rawalpindi and Islamabad, Pakistan
+          </span>
+        </div>
+
+        <div class="cline">
+          <span class="txt c-comment">
+            &nbsp;*/
+          </span>
+        </div>
+
       </div>
+
 
       <div class="hero-row">
+
         <div class="hero-text">
-          <p class="lede">I graduated in Computer Engineering from Air University, and I've spent the last couple of years going back and forth between two worlds that don't usually share a desk: training vision transformers to catch deepfakes, and hand-laying transistors for a full adder in Cadence. <em>I like it better when a project makes me do both.</em><span class="cursor"></span></p>
-          <p class="lede">Looking for work in applied AI, ML engineering, embedded systems, or software dev: somewhere I can be useful on day one, not just in the interview.</p>
+
+          <p class="lede">
+            I graduated in Computer Engineering from Air University, and I've spent the last couple of years going back and forth between two worlds that don't usually share a desk: training vision transformers to catch deepfakes, and hand-laying transistors for a full adder in Cadence.
+            <em>I like it better when a project makes me do both.</em>
+            <span class="cursor"></span>
+          </p>
+
+
+          <p class="lede">
+            Looking for work in applied AI, ML engineering, embedded systems, or software dev: somewhere I can be useful on day one, not just in the interview.
+          </p>
+
 
           <div class="cta-row">
-            <a class="btn btn-fill" href="mailto:abdullah.a.bhatti72@gmail.com">&#9654; Email Me</a>
-            <a class="btn btn-stroke" href="resume.pdf" download>Download CV</a>
+
+            <a class="btn btn-fill"
+               href="mailto:abdullah.a.bhatti72@gmail.com">
+              &#9654; Email Me
+            </a>
+
+            <a class="btn btn-stroke"
+               href="resume.pdf"
+               download>
+              Download CV
+            </a>
+
           </div>
+
 
           <div class="contact-list">
-            <span><a href="mailto:abdullah.a.bhatti72@gmail.com">abdullah.a.bhatti72@gmail.com</a></span>
+
+            <span>
+              <a href="mailto:abdullah.a.bhatti72@gmail.com">
+                abdullah.a.bhatti72@gmail.com
+              </a>
+            </span>
+
             <span class="sep">/</span>
-            <span><a href="tel:+923368888935">+92 336 8888935</a></span>
+
+            <span>
+              <a href="tel:+923368888935">
+                +92 336 8888935
+              </a>
+            </span>
+
             <span class="sep">/</span>
-            <span><a href="https://github.com/AAB-69" target="_blank" rel="noopener">github.com/AAB-69</a></span>
+
+            <span>
+              <a href="https://github.com/AAB-69"
+                 target="_blank"
+                 rel="noopener">
+                github.com/AAB-69
+              </a>
+            </span>
+
             <span class="sep">/</span>
-            <span><a href="https://linkedin.com/in/abdullah-ahmed-bhatti" target="_blank" rel="noopener">linkedin</a></span>
+
+            <span>
+              <a href="https://linkedin.com/in/abdullah-ahmed-bhatti"
+                 target="_blank"
+                 rel="noopener">
+                linkedin
+              </a>
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- PROFILE PICTURE -->
+        <div class="portrait-frame" id="portraitFrame">
+
+          <span class="portrait-label">
+            // preview
+          </span>
+
+          <span class="c2"></span>
+          <span class="c3"></span>
+
+          <!-- Image stored in the GitHub /images folder -->
+          <img src="images/new_img.jpeg"
+               alt="Abdullah Ahmed Bhatti"
+               onerror="this.parentElement.classList.add('empty')">
+
+          <!-- Fallback if the image cannot be loaded -->
+          <div class="portrait-placeholder">
+            add<br>
+            images/new_img.jpeg<br>
+            here
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section id="experience">
+
+      <h2 class="s-head">
+        <span class="num">01</span>
+        <span class="title">experience</span>
+      </h2>
+
+
+      <div class="code-block">
+
+        <div class="cline">
+          <span class="txt c-text">
+            void internship() {
+          </span>
+        </div>
+
+        <div class="cline hl-cyan">
+          <span class="txt indent c-text">
+            <span class="c-key">string</span>
+            role =
+            <span class="c-str">
+              "AI &amp; Cybersecurity Intern"
+            </span>;
+          </span>
+        </div>
+
+        <div class="cline">
+          <span class="txt indent c-text">
+            <span class="c-key">string</span>
+            company =
+            <span class="c-str">
+              "AgriStreams, Cybersecurity Zone, NSTP, NUST Islamabad"
+            </span>;
+          </span>
+        </div>
+
+        <div class="cline">
+          <span class="txt indent c-text">
+            <span class="c-key">string</span>
+            duration =
+            <span class="c-str">
+              "Jun to Aug 2025"
+            </span>;
+          </span>
+        </div>
+
+        <div class="cline">
+          <span class="txt indent c-comment">
+            // Worked in the Cybersecurity Department on network monitoring, security analysis, and vulnerability assessment.
+          </span>
+        </div>
+
+        <div class="cline">
+          <span class="txt indent c-comment">
+            // Helped run day-to-day security operations and picked up how enterprise security workflows actually work in practice.
+          </span>
+        </div>
+
+        <div class="cline">
+          <span class="txt indent c-comment">
+            // Contributed to analysis around Advanced Malware Detection (AMD) and security incident identification.
+          </span>
+        </div>
+
+        <div class="cline">
+          <span class="txt indent c-comment">
+            // Got hands-on exposure to AI-based security tooling in a genuinely research-driven environment.
+          </span>
+        </div>
+
+        <div class="cline">
+          <span class="txt c-text">
+            }
+          </span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section id="projects">
+
+      <h2 class="s-head">
+        <span class="num">02</span>
+        <span class="title">projects</span>
+      </h2>
+
+
+      <div class="proj-featured">
+
+        <div class="s-tag">
+          final year project
+        </div>
+
+
+        <div class="code-block">
+
+          <div class="cline">
+            <span class="txt c-punc">
+              {
+            </span>
+          </div>
+
+          <div class="cline">
+            <span class="txt indent">
+              <span class="c-key">title</span>
+              <span class="c-punc">:</span>
+              <span class="c-str">
+                "Deepfake Detection in Multimedia Content"
+              </span>
+              <span class="c-punc">,</span>
+            </span>
+          </div>
+
+          <div class="cline hl-red">
+            <span class="txt indent">
+              <span class="c-key">result</span>
+              <span class="c-punc">:</span>
+              <span class="c-str">
+                "90%+ accuracy across diverse real-world datasets"
+              </span>
+              <span class="c-punc">,</span>
+            </span>
+          </div>
+
+          <div class="cline">
+            <span class="txt indent">
+              <span class="c-key">summary</span>
+              <span class="c-punc">:</span>
+              <span class="c-str">
+                "A multi-model ensemble: a ViT-B/16 branch reads frame-level visual artifacts, while a BiLSTM + Transformer Encoder branch looks at motion sequences for temporal inconsistency. Ran on GPU to keep inference fast without ballooning compute."
+              </span>
+              <span class="c-punc">,</span>
+            </span>
+          </div>
+
+          <div class="cline">
+            <span class="txt indent">
+              <span class="c-key">stack</span>
+              <span class="c-punc">:</span>
+              <span class="c-punc">[</span>
+              <span class="c-str">"PyTorch"</span>
+              <span class="c-punc">,</span>
+              <span class="c-str">"OpenCV"</span>
+              <span class="c-punc">,</span>
+              <span class="c-str">"Transformers"</span>
+              <span class="c-punc">]</span>
+            </span>
+          </div>
+
+          <div class="cline">
+            <span class="txt c-punc">
+              }
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="proj-lite">
+
+        <div class="proj-lite-title">
+          <span class="punc">&gt;</span>
+          NLP Architecture Progression: Sentiment Classification
+        </div>
+
+        <p class="proj-lite-desc">
+          Walked the same sentiment-classification problem through three architectures (vanilla RNN, LSTM, Transformer) on the IMDb review dataset, to see the accuracy gains at each step for myself.
+        </p>
+
+        <div class="proj-lite-stack">
+          // stack: PyTorch, Python
+        </div>
+
+      </div>
+
+
+      <div class="proj-lite">
+
+        <div class="proj-lite-title">
+          <span class="punc">&gt;</span>
+          VLSI Design: Transmission Gate Full Adder
+        </div>
+
+        <p class="proj-lite-desc">
+          Full adder built in transmission-gate logic instead of standard CMOS, to cut transistor count and power. Checked logic correctness, propagation delay, and power draw through simulation.
+        </p>
+
+        <div class="proj-lite-stack">
+          // stack: Cadence, Verilog
+        </div>
+
+      </div>
+
+
+      <div class="proj-lite">
+
+        <div class="proj-lite-title">
+          <span class="punc">&gt;</span>
+          16-bit Processor in Verilog
+        </div>
+
+        <p class="proj-lite-desc">
+          A fully parameterized 16-bit processor from scratch, with a custom instruction set architecture, verified end-to-end in Vivado simulation.
+        </p>
+
+        <div class="proj-lite-stack">
+          // stack: Verilog HDL, Xilinx Vivado
+        </div>
+
+      </div>
+
+
+      <div class="proj-lite">
+
+        <div class="proj-lite-title">
+          <span class="punc">&gt;</span>
+          Carotid Artery Ultrasound Segmentation
+        </div>
+
+        <p class="proj-lite-desc">
+          MATLAB pipeline to segment the common carotid artery in ultrasound images: median filtering, CLAHE contrast enhancement, and morphological operations, landing around a 0.84 Dice score.
+        </p>
+
+        <div class="proj-lite-stack">
+          // stack: MATLAB, image processing
+        </div>
+
+      </div>
+
+
+      <div class="proj-lite">
+
+        <div class="proj-lite-title">
+          <span class="punc">&gt;</span>
+          Bank Management System
+        </div>
+
+        <p class="proj-lite-desc">
+          A full bank management system in C++, built around OOP principles, with ROT13 encryption for account data.
+        </p>
+
+        <div class="proj-lite-stack">
+          // stack: C++
+        </div>
+
+      </div>
+
+
+      <div class="proj-lite">
+
+        <div class="proj-lite-title">
+          <span class="punc">&gt;</span>
+          MIPS Architecture Simulation
+        </div>
+
+        <p class="proj-lite-desc">
+          Simulated core MIPS processor behavior and pipelining, with assembly programs covering addressing, branching, and arithmetic.
+        </p>
+
+        <div class="proj-lite-stack">
+          // stack: MIPS assembly
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section id="skills">
+
+      <h2 class="s-head">
+        <span class="num">03</span>
+        <span class="title">skills</span>
+      </h2>
+
+
+      <div class="code-block" style="padding: 4px 18px;">
+
+        <div class="cline" style="border:none;">
+          <span class="txt skill-line">
+            <span class="k">ml_ai</span>
+            <span class="p"> = [</span>
+            <span class="v">
+              "PyTorch", "TensorFlow", "OpenCV", "Transformers", "Pandas", "NumPy", "Scikit-learn", "deep learning", "computer vision", "image processing", "Whisper", "Google Colab"
+            </span>
+            <span class="p">];</span>
+          </span>
+        </div>
+
+        <div class="cline" style="border:none;">
+          <span class="txt skill-line">
+            <span class="k">languages</span>
+            <span class="p"> = [</span>
+            <span class="v">
+              "Python", "C", "C++", "MIPS assembly", "HTML", "CSS"
+            </span>
+            <span class="p">];</span>
+          </span>
+        </div>
+
+        <div class="cline" style="border:none;">
+          <span class="txt skill-line">
+            <span class="k">hardware_vlsi</span>
+            <span class="p"> = [</span>
+            <span class="v">
+              "Verilog HDL (Vivado)", "Cadence", "digital logic design", "transmission gate logic", "microprocessors", "Arduino", "Proteus"
+            </span>
+            <span class="p">];</span>
+          </span>
+        </div>
+
+        <div class="cline" style="border:none;">
+          <span class="txt skill-line">
+            <span class="k">signals_robotics</span>
+            <span class="p"> = [</span>
+            <span class="v">
+              "DSP", "signals &amp; systems", "applied robotics", "MATLAB"
+            </span>
+            <span class="p">];</span>
+          </span>
+        </div>
+
+        <div class="cline" style="border:none;">
+          <span class="txt skill-line">
+            <span class="k">software</span>
+            <span class="p"> = [</span>
+            <span class="v">
+              "OOP", "data structures &amp; algorithms", "software engineering", "debugging"
+            </span>
+            <span class="p">];</span>
+          </span>
+        </div>
+
+        <div class="cline" style="border:none;">
+          <span class="txt skill-line">
+            <span class="k">networking_db</span>
+            <span class="p"> = [</span>
+            <span class="v">
+              "CISCO Packet Tracer", "network config &amp; troubleshooting", "Ubuntu/Linux", "MS SQL Server"
+            </span>
+            <span class="p">];</span>
+          </span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section id="education">
+
+      <h2 class="s-head">
+        <span class="num">04</span>
+        <span class="title">education</span>
+      </h2>
+
+
+      <div class="edu">
+
+        <div>
+          <div class="edu-name">
+            B.Sc. Computer Engineering
+          </div>
+
+          <div class="edu-school">
+            Air University, Islamabad · CGPA 3.04 · ML, computer vision &amp; digital hardware design
           </div>
         </div>
 
-        <div class="portrait-frame" id="portraitFrame">
-          <span class="portrait-label">// preview</span>
-          <span class="c2"></span><span class="c3"></span>
-          <img src="images/new_img.jpeg"
-       alt="Abdullah Ahmed Bhatti"
-       onerror="this.parentElement.classList.add('empty')">
-          <div class="portrait-placeholder">add<br>profile.jpg<br>here</div>
+        <div class="edu-date">
+          2022 to 2026
         </div>
-      </div>
-    </section>
 
-    <section id="experience">
-      <h2 class="s-head"><span class="num">01</span><span class="title">experience</span></h2>
-      <div class="code-block">
-        <div class="cline"><span class="txt c-text">void internship() {</span></div>
-        <div class="cline hl-cyan"><span class="txt indent c-text"><span class="c-key">string</span> role = <span class="c-str">"AI &amp; Cybersecurity Intern"</span>;</span></div>
-        <div class="cline"><span class="txt indent c-text"><span class="c-key">string</span> company = <span class="c-str">"AgriStreams, Cybersecurity Zone, NSTP, NUST Islamabad"</span>;</span></div>
-        <div class="cline"><span class="txt indent c-text"><span class="c-key">string</span> duration = <span class="c-str">"Jun to Aug 2025"</span>;</span></div>
-        <div class="cline"><span class="txt indent c-comment">// Worked in the Cybersecurity Department on network monitoring, security analysis, and vulnerability assessment.</span></div>
-        <div class="cline"><span class="txt indent c-comment">// Helped run day-to-day security operations and picked up how enterprise security workflows actually work in practice.</span></div>
-        <div class="cline"><span class="txt indent c-comment">// Contributed to analysis around Advanced Malware Detection (AMD) and security incident identification.</span></div>
-        <div class="cline"><span class="txt indent c-comment">// Got hands-on exposure to AI-based security tooling in a genuinely research-driven environment.</span></div>
-        <div class="cline"><span class="txt c-text">}</span></div>
-      </div>
-    </section>
-
-    <section id="projects">
-      <h2 class="s-head"><span class="num">02</span><span class="title">projects</span></h2>
-
-      <div class="proj-featured">
-        <div class="s-tag">final year project</div>
-        <div class="code-block">
-          <div class="cline"><span class="txt c-punc">{</span></div>
-          <div class="cline"><span class="txt indent"><span class="c-key">title</span><span class="c-punc">:</span> <span class="c-str">"Deepfake Detection in Multimedia Content"</span><span class="c-punc">,</span></span></div>
-          <div class="cline hl-red"><span class="txt indent"><span class="c-key">result</span><span class="c-punc">:</span> <span class="c-str">"90%+ accuracy across diverse real-world datasets"</span><span class="c-punc">,</span></span></div>
-          <div class="cline"><span class="txt indent"><span class="c-key">summary</span><span class="c-punc">:</span> <span class="c-str">"A multi-model ensemble: a ViT-B/16 branch reads frame-level visual artifacts, while a BiLSTM + Transformer Encoder branch looks at motion sequences for temporal inconsistency. Ran on GPU to keep inference fast without ballooning compute."</span><span class="c-punc">,</span></span></div>
-          <div class="cline"><span class="txt indent"><span class="c-key">stack</span><span class="c-punc">:</span> <span class="c-punc">[</span><span class="c-str">"PyTorch"</span><span class="c-punc">,</span> <span class="c-str">"OpenCV"</span><span class="c-punc">,</span> <span class="c-str">"Transformers"</span><span class="c-punc">]</span></span></div>
-          <div class="cline"><span class="txt c-punc">}</span></div>
-        </div>
       </div>
 
-      <div class="proj-lite">
-        <div class="proj-lite-title"><span class="punc">&gt;</span>NLP Architecture Progression: Sentiment Classification</div>
-        <p class="proj-lite-desc">Walked the same sentiment-classification problem through three architectures (vanilla RNN, LSTM, Transformer) on the IMDb review dataset, to see the accuracy gains at each step for myself.</p>
-        <div class="proj-lite-stack">// stack: PyTorch, Python</div>
-      </div>
 
-      <div class="proj-lite">
-        <div class="proj-lite-title"><span class="punc">&gt;</span>VLSI Design: Transmission Gate Full Adder</div>
-        <p class="proj-lite-desc">Full adder built in transmission-gate logic instead of standard CMOS, to cut transistor count and power. Checked logic correctness, propagation delay, and power draw through simulation.</p>
-        <div class="proj-lite-stack">// stack: Cadence, Verilog</div>
-      </div>
-
-      <div class="proj-lite">
-        <div class="proj-lite-title"><span class="punc">&gt;</span>16-bit Processor in Verilog</div>
-        <p class="proj-lite-desc">A fully parameterized 16-bit processor from scratch, with a custom instruction set architecture, verified end-to-end in Vivado simulation.</p>
-        <div class="proj-lite-stack">// stack: Verilog HDL, Xilinx Vivado</div>
-      </div>
-
-      <div class="proj-lite">
-        <div class="proj-lite-title"><span class="punc">&gt;</span>Carotid Artery Ultrasound Segmentation</div>
-        <p class="proj-lite-desc">MATLAB pipeline to segment the common carotid artery in ultrasound images: median filtering, CLAHE contrast enhancement, and morphological operations, landing around a 0.84 Dice score.</p>
-        <div class="proj-lite-stack">// stack: MATLAB, image processing</div>
-      </div>
-
-      <div class="proj-lite">
-        <div class="proj-lite-title"><span class="punc">&gt;</span>Bank Management System</div>
-        <p class="proj-lite-desc">A full bank management system in C++, built around OOP principles, with ROT13 encryption for account data.</p>
-        <div class="proj-lite-stack">// stack: C++</div>
-      </div>
-
-      <div class="proj-lite">
-        <div class="proj-lite-title"><span class="punc">&gt;</span>MIPS Architecture Simulation</div>
-        <p class="proj-lite-desc">Simulated core MIPS processor behavior and pipelining, with assembly programs covering addressing, branching, and arithmetic.</p>
-        <div class="proj-lite-stack">// stack: MIPS assembly</div>
-      </div>
-    </section>
-
-    <section id="skills">
-      <h2 class="s-head"><span class="num">03</span><span class="title">skills</span></h2>
-      <div class="code-block" style="padding: 4px 18px;">
-        <div class="cline" style="border:none;"><span class="txt skill-line"><span class="k">ml_ai</span><span class="p"> = [</span><span class="v">"PyTorch", "TensorFlow", "OpenCV", "Transformers", "Pandas", "NumPy", "Scikit-learn", "deep learning", "computer vision", "image processing", "Whisper", "Google Colab"</span><span class="p">];</span></span></div>
-        <div class="cline" style="border:none;"><span class="txt skill-line"><span class="k">languages</span><span class="p"> = [</span><span class="v">"Python", "C", "C++", "MIPS assembly", "HTML", "CSS"</span><span class="p">];</span></span></div>
-        <div class="cline" style="border:none;"><span class="txt skill-line"><span class="k">hardware_vlsi</span><span class="p"> = [</span><span class="v">"Verilog HDL (Vivado)", "Cadence", "digital logic design", "transmission gate logic", "microprocessors", "Arduino", "Proteus"</span><span class="p">];</span></span></div>
-        <div class="cline" style="border:none;"><span class="txt skill-line"><span class="k">signals_robotics</span><span class="p"> = [</span><span class="v">"DSP", "signals &amp; systems", "applied robotics", "MATLAB"</span><span class="p">];</span></span></div>
-        <div class="cline" style="border:none;"><span class="txt skill-line"><span class="k">software</span><span class="p"> = [</span><span class="v">"OOP", "data structures &amp; algorithms", "software engineering", "debugging"</span><span class="p">];</span></span></div>
-        <div class="cline" style="border:none;"><span class="txt skill-line"><span class="k">networking_db</span><span class="p"> = [</span><span class="v">"CISCO Packet Tracer", "network config &amp; troubleshooting", "Ubuntu/Linux", "MS SQL Server"</span><span class="p">];</span></span></div>
-      </div>
-    </section>
-
-    <section id="education">
-      <h2 class="s-head"><span class="num">04</span><span class="title">education</span></h2>
       <div class="edu">
+
         <div>
-          <div class="edu-name">B.Sc. Computer Engineering</div>
-          <div class="edu-school">Air University, Islamabad · CGPA 3.04 · ML, computer vision &amp; digital hardware design</div>
+          <div class="edu-name">
+            Intermediate in Computer Science
+          </div>
+
+          <div class="edu-school">
+            Punjab Group of Colleges, Islamabad
+          </div>
         </div>
-        <div class="edu-date">2022 to 2026</div>
+
+        <div class="edu-date">
+          2022
+        </div>
+
       </div>
+
+
       <div class="edu">
+
         <div>
-          <div class="edu-name">Intermediate in Computer Science</div>
-          <div class="edu-school">Punjab Group of Colleges, Islamabad</div>
+          <div class="edu-name">
+            Matriculation
+          </div>
+
+          <div class="edu-school">
+            Silver Oaks School, Islamabad
+          </div>
         </div>
-        <div class="edu-date">2022</div>
+
+        <div class="edu-date">
+          2019
+        </div>
+
       </div>
+
+
       <div class="edu">
+
         <div>
-          <div class="edu-name">Matriculation</div>
-          <div class="edu-school">Silver Oaks School, Islamabad</div>
+          <div class="edu-name">
+            Microsoft Office Specialist (MOS)
+          </div>
+
+          <div class="edu-school">
+            Microsoft
+          </div>
         </div>
-        <div class="edu-date">2019</div>
-      </div>
-      <div class="edu">
-        <div>
-          <div class="edu-name">Microsoft Office Specialist (MOS)</div>
-          <div class="edu-school">Microsoft</div>
-        </div>
+
         <div class="edu-date"></div>
+
       </div>
+
     </section>
+
 
     <section>
+
       <div class="cols">
+
         <div>
-          <h2 class="s-head"><span class="num">05</span><span class="title">volunteer</span></h2>
+
+          <h2 class="s-head">
+            <span class="num">05</span>
+            <span class="title">volunteer</span>
+          </h2>
+
           <ul class="dash">
-            <li><span class="c-comment">//</span> Academic support and mentorship at Pehli Kiran School</li>
-            <li><span class="c-comment">//</span> Ration drives and food distribution, Rehmani Free Dastarkhawan, Rawalpindi</li>
-            <li><span class="c-comment">//</span> Community cleanup, F-9 Park, Islamabad</li>
+
+            <li>
+              <span class="c-comment">//</span>
+              Academic support and mentorship at Pehli Kiran School
+            </li>
+
+            <li>
+              <span class="c-comment">//</span>
+              Ration drives and food distribution, Rehmani Free Dastarkhawan, Rawalpindi
+            </li>
+
+            <li>
+              <span class="c-comment">//</span>
+              Community cleanup, F-9 Park, Islamabad
+            </li>
+
           </ul>
+
         </div>
+
+
         <div>
-          <h2 class="s-head"><span class="num">06</span><span class="title">languages</span></h2>
+
+          <h2 class="s-head">
+            <span class="num">06</span>
+            <span class="title">languages</span>
+          </h2>
+
           <ul class="dash">
-            <li><span class="c-comment">//</span> English: fluent</li>
-            <li><span class="c-comment">//</span> Urdu: native</li>
+
+            <li>
+              <span class="c-comment">//</span>
+              English: fluent
+            </li>
+
+            <li>
+              <span class="c-comment">//</span>
+              Urdu: native
+            </li>
+
           </ul>
+
         </div>
+
       </div>
+
     </section>
 
+
     <footer id="contact">
-      <h2 class="s-head"><span class="num">07</span><span class="title">contact</span></h2>
+
+      <h2 class="s-head">
+        <span class="num">07</span>
+        <span class="title">contact</span>
+      </h2>
+
+
       <div class="term">
-        <div class="ln"><span class="prompt">$</span><span class="out">mail abdullah.a.bhatti72@gmail.com</span></div>
-        <div class="ln"><span class="prompt">$</span><span class="out">call +92 336 8888935</span></div>
-        <div class="ln" style="margin-bottom:0;"><span class="prompt">$</span><span class="out">echo "based in Rawalpindi and Islamabad"</span><span class="cursor"></span></div>
+
+        <div class="ln">
+          <span class="prompt">$</span>
+          <span class="out">
+            mail abdullah.a.bhatti72@gmail.com
+          </span>
+        </div>
+
+        <div class="ln">
+          <span class="prompt">$</span>
+          <span class="out">
+            call +92 336 8888935
+          </span>
+        </div>
+
+        <div class="ln" style="margin-bottom:0;">
+          <span class="prompt">$</span>
+          <span class="out">
+            echo "based in Rawalpindi and Islamabad"
+          </span>
+          <span class="cursor"></span>
+        </div>
+
       </div>
+
+
       <div class="cta-row">
-        <a class="btn btn-fill" href="mailto:abdullah.a.bhatti72@gmail.com">&#9654; Email Me</a>
-        <a class="btn btn-stroke" href="resume.pdf" download>Download CV</a>
+
+        <a class="btn btn-fill"
+           href="mailto:abdullah.a.bhatti72@gmail.com">
+          &#9654; Email Me
+        </a>
+
+        <a class="btn btn-stroke"
+           href="resume.pdf"
+           download>
+          Download CV
+        </a>
+
       </div>
+
     </footer>
 
   </div>
+
 </div>
 
+
 <script>
+
   const timeEl = document.getElementById('localTime');
+
   function updateClock(){
-    const fmt = new Intl.DateTimeFormat('en-GB', { timeZone:'Asia/Karachi', hour:'2-digit', minute:'2-digit' });
-    timeEl.textContent = 'UTF-8 · Asia/Karachi ' + fmt.format(new Date());
+
+    const fmt = new Intl.DateTimeFormat('en-GB', {
+      timeZone:'Asia/Karachi',
+      hour:'2-digit',
+      minute:'2-digit'
+    });
+
+    timeEl.textContent =
+      'UTF-8 · Asia/Karachi ' + fmt.format(new Date());
+
   }
+
   updateClock();
+
   setInterval(updateClock, 30000);
 
+
   // active tab highlight on scroll
+
   const tabs = document.querySelectorAll('.tab');
-  const targets = ['experience','projects','skills','education','contact'].map(id => document.getElementById(id));
+
+  const targets = [
+    'experience',
+    'projects',
+    'skills',
+    'education',
+    'contact'
+  ].map(id => document.getElementById(id));
+
+
   const io = new IntersectionObserver((entries) => {
+
     entries.forEach(e => {
+
       if (e.isIntersecting) {
+
         const id = e.target.id;
-        tabs.forEach(t => t.classList.toggle('active', t.getAttribute('href') === '#' + id));
+
+        tabs.forEach(t =>
+          t.classList.toggle(
+            'active',
+            t.getAttribute('href') === '#' + id
+          )
+        );
+
       }
+
     });
-  }, { rootMargin: '-45% 0px -50% 0px' });
+
+  }, {
+    rootMargin: '-45% 0px -50% 0px'
+  });
+
+
   targets.forEach(t => t && io.observe(t));
+
 </script>
+
 </body>
 </html>

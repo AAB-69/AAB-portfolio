@@ -4,1166 +4,433 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abdullah Ahmed Bhatti</title>
-<meta name="description" content="Abdullah Ahmed Bhatti — Computer Engineer. AI, computer vision, and hardware systems.">
+<meta name="description" content="Abdullah Ahmed Bhatti, Computer Engineer. AI, computer vision, and hardware systems.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper: #faf8f2;
-    --ink: #201f1a;
-    --ink-soft: #55534a;
-    --ink-faint: #8a8776;
-    --red: #a2321c;
-    --blue: #3f6188;
-    --rule: #dcd7c4;
+    --bg: #10141b;
+    --bg-panel: #171c26;
+    --bg-tab: #0b0e13;
+    --text: #dbe2ea;
+    --text-dim: #8b95a5;
+    --text-faint: #4d5564;
+    --green: #3ddc84;
+    --cyan: #2dd4d4;
+    --red: #ef4444;
+    --yellow: #dfa85c;
+    --rule: #262c38;
+    --line-num: #4a5261;
+    --hl-cyan: rgba(45,212,212,0.13);
+    --hl-red: rgba(239,68,68,0.20);
   }
-
   *{ box-sizing:border-box; }
-
   html{ scroll-behavior:smooth; }
-
   body{
-    margin:0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'Lora', Georgia, serif;
-    font-size: 17px;
-    line-height: 1.65;
+    margin:0; background: var(--bg); color: var(--text);
+    font-family: 'JetBrains Mono', monospace; font-size:15px; line-height:1.7;
   }
+  a{ color: var(--cyan); text-decoration:none; }
+  ::selection{ background: var(--cyan); color: #05171a; }
+  :focus-visible{ outline: 1.5px solid var(--cyan); outline-offset: 2px; }
+  ::-webkit-scrollbar{ width:11px; }
+  ::-webkit-scrollbar-track{ background: var(--bg); }
+  ::-webkit-scrollbar-thumb{ background: var(--rule); border-radius:6px; border:2px solid var(--bg); }
+  ::-webkit-scrollbar-thumb:hover{ background: var(--line-num); }
 
-  body::before{
-    content:"";
-    position: fixed;
-    inset:0;
-    pointer-events:none;
-    z-index:-1;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  .page{ max-width: 760px; margin:0 auto; }
+
+  /* title bar, like an editor window chrome */
+  .titlebar{
+    background: var(--bg-tab); border-bottom:1px solid var(--rule);
+    display:flex; align-items:center; padding: 10px 18px; gap:14px;
+    position: sticky; top:0; z-index:20;
   }
-
-  a{ color: var(--ink); }
-
-  ::selection{
-    background: var(--red);
-    color: var(--paper);
+  .dots{ display:flex; gap:7px; flex-shrink:0; }
+  .dot{ width:11px; height:11px; border-radius:50%; }
+  .dot.red{ background:#ef4444; } .dot.yellow{ background:#eab308; } .dot.green{ background:#22c55e; }
+  .titlebar .filename{
+    flex:1; text-align:center; font-size:12.5px; color: var(--text-dim);
   }
+  .titlebar .clock{ font-size:11.5px; color: var(--text-faint); white-space:nowrap; }
 
-  :focus-visible{
-    outline: 2px solid var(--red);
-    outline-offset: 3px;
+  /* tab strip nav */
+  .tabstrip{
+    display:flex; overflow-x:auto; background: var(--bg-tab); border-bottom:1px solid var(--rule);
+    position: sticky; top:41px; z-index:19;
   }
-
-  .page{
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 56px 24px 90px;
+  .tab{
+    padding: 11px 18px; font-size:12.5px; color: var(--text-faint);
+    border-right:1px solid var(--rule); white-space:nowrap; transition: color .15s ease, background .15s ease;
+    border-bottom: 2px solid transparent;
   }
+  .tab:hover{ color: var(--text); background: rgba(255,255,255,0.02); }
+  .tab.active{ color: var(--cyan); border-bottom-color: var(--cyan); background: var(--bg); }
 
-  .mono{
-    font-family: 'Space Mono', monospace;
+  .content{ padding: 44px 22px 90px; }
+
+  /* generic code-block with line-number gutter (CSS counters) */
+  .code-block{
+    background: var(--bg-panel); border:1px solid var(--rule); border-radius:6px;
+    overflow:hidden; counter-reset: line; margin: 0 0 18px;
   }
-
-  /* running header */
-  .runhead{
-    font-family:'Space Mono',monospace;
-    font-size:11.5px;
-    letter-spacing:.06em;
-    color: var(--ink-faint);
-    text-transform:uppercase;
-    display:flex;
-    justify-content:space-between;
-    padding-bottom:14px;
-    border-bottom:1px solid var(--rule);
-    margin-bottom: 46px;
-    flex-wrap:wrap;
-    gap:8px;
+  .cline{
+    counter-increment: line; display:flex; align-items:flex-start;
+    padding: 7px 16px 7px 0; border-bottom:1px solid rgba(255,255,255,0.03);
   }
-
-  .runhead nav a{
-    color: var(--ink-faint);
-    text-decoration:none;
-    margin-left:16px;
+  .cline:last-child{ border-bottom:none; }
+  .cline::before{
+    content: counter(line); width:34px; flex-shrink:0; text-align:right; margin-right:16px;
+    color: var(--line-num); font-size:12px; user-select:none; padding-top:1px;
   }
+  .cline.hl-cyan{ background: var(--hl-cyan); }
+  .cline.hl-red{ background: var(--hl-red); }
+  .cline .txt{ flex:1; word-break:break-word; }
+  .c-comment{ color: var(--green); }
+  .c-key{ color: var(--cyan); }
+  .c-str{ color: var(--yellow); }
+  .c-punc{ color: var(--text-faint); }
+  .c-text{ color: var(--text); }
 
-  .runhead nav a:hover{
-    color: var(--blue);
+  /* hero */
+  .hero{ margin-bottom: 20px; }
+  .cursor{
+    display:inline-block; width:8px; height:1em; background: var(--cyan);
+    vertical-align: text-bottom; margin-left:2px; animation: blink 1s step-end infinite;
   }
+  @keyframes blink{ 50%{ opacity:0; } }
+  @media (prefers-reduced-motion: reduce){ .cursor{ animation:none; } }
 
-  .runhead nav a:first-child{
-    margin-left:0;
+  .hero-row{ display:flex; gap:28px; align-items:flex-start; flex-wrap:wrap; margin-top:22px; }
+  .hero-text{ flex:1 1 340px; min-width:280px; }
+  .lede{ color: var(--text-dim); font-size:14.5px; max-width:60ch; margin: 0 0 14px; }
+  .lede em{ color: var(--text); font-style:normal; }
+
+  .cta-row{ display:flex; gap:12px; flex-wrap:wrap; margin: 24px 0 6px; }
+  .btn{
+    font-family:'JetBrains Mono',monospace; font-size:13px; padding:11px 20px; border-radius:4px;
+    border:1px solid var(--cyan); transition: all .15s ease; display:inline-block;
   }
+  .btn-fill{ background: var(--cyan); color:#052226; font-weight:700; }
+  .btn-fill:hover{ background:#4fe6e6; }
+  .btn-stroke{ color: var(--cyan); border-color: var(--rule); }
+  .btn-stroke:hover{ border-color: var(--cyan); background: var(--hl-cyan); }
 
-  /* intro */
-  .intro{
-    margin-bottom: 64px;
-  }
+  .contact-list{ margin-top:24px; font-size:12.5px; color: var(--text-faint); display:flex; flex-wrap:wrap; gap:6px 0; }
+  .contact-list a{ color: var(--text-dim); border-bottom:1px dotted var(--rule); }
+  .contact-list a:hover{ color: var(--cyan); border-color: var(--cyan); }
+  .sep{ margin:0 10px; color: var(--text-faint); }
 
-  h1{
-    font-family:'Space Mono',monospace;
-    font-weight:700;
-    font-size: clamp(28px,5vw,38px);
-    margin: 0 0 6px;
-    line-height:1.2;
-    position:relative;
-    display:inline-block;
-  }
-
-  .underline-svg{
-    display:block;
-    width: 100%;
-    max-width:340px;
-    height:10px;
-    margin-top:2px;
-  }
-
-  .underline-svg path{
-    stroke-dasharray: 400;
-    stroke-dashoffset: 400;
-    animation: draw-in 1.1s ease-out .3s forwards;
-  }
-
-  @keyframes draw-in{
-    to{
-      stroke-dashoffset: 0;
-    }
-  }
-
-  .proj-flag .circle ellipse{
-    stroke-dasharray: 420;
-    stroke-dashoffset: 420;
-    transition: stroke-dashoffset 1s ease-out;
-  }
-
-  .proj-flag.in-view .circle ellipse{
-    stroke-dashoffset: 0;
-  }
-
-  .proj-title{
-    transition: color .2s ease;
-  }
-
-  .proj:hover .proj-title{
-    color: var(--red);
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .underline-svg path{
-      animation:none;
-      stroke-dashoffset:0;
-    }
-
-    .proj-flag .circle ellipse{
-      transition:none;
-      stroke-dashoffset:0;
-    }
-  }
-
-  .role{
-    font-family:'Space Mono',monospace;
-    font-size:14px;
-    color: var(--red);
-    margin: 14px 0 20px;
-  }
-
-  .lede{
-    font-size:17.5px;
-    color: var(--ink);
-    max-width: 58ch;
-  }
-
-  .lede em{
-    color: var(--ink-soft);
-  }
-
-  .contact-list{
-    margin-top: 26px;
-    font-family:'Space Mono',monospace;
-    font-size:13px;
-    color: var(--ink-soft);
-    display:flex;
-    flex-wrap:wrap;
-    gap: 6px 0;
-  }
-
-  .contact-list span{
-    white-space:nowrap;
-  }
-
-  .contact-list a{
-    text-decoration: underline;
-    text-decoration-color: var(--rule);
-    text-underline-offset:3px;
-  }
-
-  .contact-list a:hover{
-    color: var(--blue);
-    text-decoration-color: var(--blue);
-  }
-
-  .sep{
-    margin: 0 10px;
-    color: var(--ink-faint);
-  }
-
-  /* intro layout + portrait */
-  .intro-row{
-    display:flex;
-    gap: 34px;
-    align-items:flex-start;
-    flex-wrap:wrap;
-  }
-
-  .intro-text{
-    flex: 1 1 340px;
-    min-width: 280px;
-  }
-
+  /* portrait: viewfinder style */
   .portrait-frame{
-    width: 148px;
-    height: 148px;
-    flex-shrink:0;
-    padding: 8px;
-    background:#fff;
-    border: 1px solid var(--rule);
-    box-shadow: 0 3px 10px rgba(32,31,26,0.1);
-    transform: rotate(-3deg);
-    position:relative;
-    margin-top: 6px;
+    width:144px; height:144px; flex-shrink:0; position:relative; border:1px dashed var(--rule);
+    background: var(--bg-panel); margin-top:4px;
   }
-
-  .portrait-frame .tape{
-    position:absolute;
-    top:-13px;
-    left:50%;
-    width:66px;
-    height:22px;
-    background: rgba(63,97,136,0.55);
-    border:1px solid rgba(63,97,136,0.35);
-    transform: translateX(-50%) rotate(-4deg);
+  .portrait-frame::before, .portrait-frame::after,
+  .portrait-frame .c2, .portrait-frame .c3{
+    content:""; position:absolute; width:14px; height:14px; border-color: var(--cyan); border-style:solid; border-width:0;
   }
-
-  .portrait-frame img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-  }
-
-  .portrait-frame.empty img{
-    display:none;
-  }
-
+  .portrait-frame::before{ top:-1px; left:-1px; border-top-width:2px; border-left-width:2px; }
+  .portrait-frame::after{ bottom:-1px; right:-1px; border-bottom-width:2px; border-right-width:2px; }
+  .portrait-frame .c2{ top:-1px; right:-1px; border-top-width:2px; border-right-width:2px; }
+  .portrait-frame .c3{ bottom:-1px; left:-1px; border-bottom-width:2px; border-left-width:2px; }
+  .portrait-label{ position:absolute; top:-20px; left:0; font-size:10.5px; color: var(--green); }
+  .portrait-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .portrait-frame.empty img{ display:none; }
   .portrait-placeholder{
-    display:none;
-    width:100%;
-    height:100%;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    font-family:'Space Mono',monospace;
-    font-size:10.5px;
-    line-height:1.5;
-    color: var(--ink-faint);
-    border: 1px dashed var(--rule);
+    display:none; width:100%; height:100%; align-items:center; justify-content:center; text-align:center;
+    font-size:10px; line-height:1.5; color: var(--text-faint); padding:10px;
   }
-
-  .portrait-frame.empty .portrait-placeholder{
-    display:flex;
-  }
-
-  @media (max-width: 480px){
-    .portrait-frame{
-      transform: rotate(-2deg);
-    }
-  }
+  .portrait-frame.empty .portrait-placeholder{ display:flex; }
 
   /* sections */
-  section{
-    margin-bottom: 58px;
+  section{ margin: 56px 0; scroll-margin-top: 90px; }
+  .s-head{ display:flex; align-items:baseline; gap:12px; margin: 0 0 20px; }
+  .s-head .num{ color: var(--text-faint); font-size:13px; }
+  .s-head .title{ font-weight:700; font-size:18px; color: var(--text); }
+  .s-head .title::before{ content:"# "; color: var(--text-faint); }
+
+  /* experience function block */
+  .fn-line{ color: var(--text); }
+  .fn-line .c-key{ color:#c792ea; }
+  .indent{ padding-left:20px; }
+
+  /* featured project object */
+  .proj-featured .s-tag{
+    font-size:11px; color: var(--cyan); border:1px solid var(--rule); border-radius:3px;
+    padding:2px 8px; margin-bottom:10px; display:inline-block;
   }
 
-  .s-head{
-    font-family:'Space Mono',monospace;
-    font-weight:700;
-    font-size:13px;
-    letter-spacing:.08em;
-    text-transform: uppercase;
-    color: var(--ink);
-    margin: 0 0 22px;
-    padding-bottom:8px;
-    border-bottom: 1px solid var(--rule);
-    display:flex;
-    align-items:baseline;
-    gap:10px;
+  /* lighter projects */
+  .proj-lite{
+    background: var(--bg-panel); border:1px solid var(--rule); border-radius:6px;
+    padding: 16px 18px; margin-bottom:12px;
   }
+  .proj-lite-title{ color: var(--text); font-weight:700; font-size:14.5px; margin-bottom:8px; }
+  .proj-lite-title .punc{ color: var(--cyan); margin-right:6px; }
+  .proj-lite-desc{ color: var(--text-dim); font-size:13.5px; margin:0 0 10px; }
+  .proj-lite-stack{ font-size:12.5px; color: var(--green); }
 
-  .s-head::before{
-    content: "§";
-    color: var(--blue);
-    font-size:15px;
-  }
-
-  /* experience */
-  .entry{
-    margin-bottom: 28px;
-  }
-
-  .entry:last-child{
-    margin-bottom:0;
-  }
-
-  .entry-top{
-    display:flex;
-    justify-content:space-between;
-    gap:16px;
-    flex-wrap:wrap;
-    align-items:baseline;
-  }
-
-  .entry-role{
-    font-weight:600;
-    font-size:17px;
-  }
-
-  .entry-org{
-    color: var(--ink-soft);
-    font-style:italic;
-  }
-
-  .entry-date{
-    font-family:'Space Mono',monospace;
-    font-size:12px;
-    color: var(--ink-faint);
-    white-space:nowrap;
-  }
-
-  ul.plain{
-    margin: 10px 0 0;
-    padding-left: 20px;
-  }
-
-  ul.plain li{
-    margin-bottom: 6px;
-    color: var(--ink-soft);
-  }
-
-  ul.plain li::marker{
-    content: "— ";
-    color: var(--ink-faint);
-  }
-
-  /* projects */
-  .proj{
-    padding: 18px 0;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .proj:last-child{
-    border-bottom:none;
-  }
-
-  .proj-head{
-    display:flex;
-    align-items:baseline;
-    gap:10px;
-    flex-wrap:wrap;
-  }
-
-  .proj-title{
-    font-weight:600;
-    font-size:16.5px;
-  }
-
-  .proj-flag{
-    position:relative;
-  }
-
-  .proj-flag .circle{
-    position:absolute;
-    left:-14px;
-    top:-10px;
-    width: calc(100% + 28px);
-    height: 42px;
-    pointer-events:none;
-  }
-
-  .proj-result{
-    font-family:'Space Mono',monospace;
-    font-size:12px;
-    color: var(--red);
-  }
-
-  .proj p{
-    color: var(--ink-soft);
-    margin: 8px 0 6px;
-    font-size:15.5px;
-  }
-
-  .stack{
-    font-size:13.5px;
-    font-style:italic;
-    color: var(--ink-faint);
-  }
-
-  /* skills as definition rows */
-  .skill-row{
-    display:grid;
-    grid-template-columns: 190px 1fr;
-    gap: 14px 20px;
-    padding: 10px 0;
-    border-bottom: 1px dotted var(--rule);
-  }
-
-  .skill-row:last-child{
-    border-bottom:none;
-  }
-
-  .skill-cat{
-    font-family:'Space Mono',monospace;
-    font-size:12.5px;
-    color: var(--blue);
-    padding-top:2px;
-  }
-
-  .skill-vals{
-    color: var(--ink-soft);
-    font-size:15px;
-  }
-
-  @media (max-width: 560px){
-    .skill-row{
-      grid-template-columns: 1fr;
-      gap:4px;
-    }
-
-    .skill-cat{
-      padding-top:0;
-    }
-  }
+  /* skills as syntax-highlighted arrays */
+  .skill-line{ margin-bottom:10px; font-size:13.5px; }
+  .skill-line .k{ color: var(--cyan); }
+  .skill-line .p{ color: var(--text-faint); }
+  .skill-line .v{ color: var(--yellow); }
 
   /* education */
-  .edu{
-    display:flex;
-    justify-content:space-between;
-    gap:16px;
-    padding:12px 0;
-    border-bottom:1px dotted var(--rule);
-    flex-wrap:wrap;
-  }
-
-  .edu:last-child{
-    border-bottom:none;
-  }
-
-  .edu-name{
-    font-weight:600;
-  }
-
-  .edu-school{
-    color: var(--ink-soft);
-    font-style:italic;
-    font-size:15px;
-  }
-
-  .edu-date{
-    font-family:'Space Mono',monospace;
-    font-size:12px;
-    color: var(--ink-faint);
-    white-space:nowrap;
-  }
+  .edu{ display:flex; justify-content:space-between; gap:14px; padding:12px 0; border-bottom:1px solid var(--rule); flex-wrap:wrap; }
+  .edu:last-child{ border-bottom:none; }
+  .edu-name{ color: var(--text); font-weight:700; font-size:14px; }
+  .edu-school{ color: var(--text-dim); font-size:12.5px; margin-top:3px; }
+  .edu-date{ color: var(--text-faint); font-size:12px; white-space:nowrap; }
 
   /* two col */
-  .cols{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-  }
+  .cols{ display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+  @media (max-width:600px){ .cols{ grid-template-columns:1fr; gap:36px; } }
+  ul.dash{ list-style:none; margin:0; padding:0; }
+  ul.dash li{ padding:7px 0; color: var(--text-dim); font-size:13.5px; }
+  ul.dash li .c-comment{ margin-right:6px; }
 
-  @media (max-width: 560px){
-    .cols{
-      grid-template-columns:1fr;
-      gap:34px;
-    }
-  }
+  /* footer terminal */
+  footer{ margin-top:70px; border-top:1px solid var(--rule); padding-top:34px; }
+  .term{ background: var(--bg-panel); border:1px solid var(--rule); border-radius:6px; padding:18px 20px; font-size:13.5px; }
+  .term .ln{ margin-bottom:6px; }
+  .term .prompt{ color: var(--cyan); margin-right:8px; }
+  .term .out{ color: var(--text-dim); }
 
-  ul.dash{
-    list-style:none;
-    margin:0;
-    padding:0;
-  }
-
-  ul.dash li{
-    padding: 8px 0 8px 16px;
-    position:relative;
-    color: var(--ink-soft);
-    font-size:15px;
-    border-bottom:1px dotted var(--rule);
-  }
-
-  ul.dash li:last-child{
-    border-bottom:none;
-  }
-
-  ul.dash li::before{
-    content:"–";
-    position:absolute;
-    left:0;
-    color: var(--ink-faint);
-  }
-
-  /* footer */
-  footer{
-    margin-top: 70px;
-    padding-top: 28px;
-    border-top: 1px solid var(--rule);
-  }
-
-  footer p{
-    color: var(--ink-soft);
-    max-width: 56ch;
-  }
-
-  .sign{
-    margin-top: 22px;
-    font-family:'Space Mono',monospace;
-    font-size:13px;
-    color: var(--ink-faint);
-  }
-
-  .sign .name{
-    color: var(--ink);
-  }
-
-  @media print{
-    body{
-      background: white;
-    }
+  @media (max-width:560px){
+    .content{ padding: 34px 16px 70px; }
+    .titlebar{ padding:10px 12px; }
   }
 </style>
 </head>
-
 <body>
-
 <div class="page">
 
-  <div class="runhead">
-    <span>Rawalpindi &amp; Islamabad, Pakistan <span id="localTime"></span></span>
-
-    <nav>
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#skills">Skills</a>
-      <a href="#education">Education</a>
-    </nav>
+  <div class="titlebar">
+    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+    <div class="filename">abdullah.cpp · portfolio</div>
+    <div class="clock mono" id="localTime"></div>
   </div>
 
-
-  <div class="intro">
-
-    <div class="intro-row">
-
-      <div class="intro-text">
-
-        <h1>
-          Abdullah Ahmed Bhatti
-
-          <svg class="underline-svg"
-               viewBox="0 0 340 10"
-               preserveAspectRatio="none"
-               aria-hidden="true">
-
-            <path d="M2,6 C 40,2 80,9 120,5 C 160,1 200,8 240,4 C 270,1 300,7 336,4"
-                  fill="none"
-                  stroke="#a2321c"
-                  stroke-width="2.4"
-                  stroke-linecap="round"/>
-
-          </svg>
-        </h1>
-
-
-        <p class="role mono">
-          computer engineer — AI systems &amp; embedded hardware
-        </p>
-
-
-        <p class="lede">
-          I graduated in Computer Engineering from Air University, and I've spent the last couple of years going back and forth between two worlds that don't usually share a desk: training vision transformers to catch deepfakes, and hand-laying transistors for a full adder in Cadence.
-          <em>I like it better when a project makes me do both.</em>
-        </p>
-
-
-        <p class="lede" style="margin-top:14px;">
-          Looking for work in applied AI, ML engineering, embedded systems, or software dev — somewhere I can be useful on day one, not just in the interview.
-        </p>
-
-
-        <div class="contact-list">
-
-          <span>
-            <a href="mailto:abdullah.a.bhatti72@gmail.com">
-              abdullah.a.bhatti72@gmail.com
-            </a>
-          </span>
-
-          <span class="sep">/</span>
-
-          <span>
-            <a href="tel:+923368888935">
-              +92 336 8888935
-            </a>
-          </span>
-
-          <span class="sep">/</span>
-
-          <span>
-            <a href="https://github.com/AAB-69"
-               target="_blank"
-               rel="noopener">
-              github.com/AAB-69
-            </a>
-          </span>
-
-          <span class="sep">/</span>
-
-          <span>
-            <a href="https://linkedin.com/in/abdullah-ahmed-bhatti"
-               target="_blank"
-               rel="noopener">
-              linkedin
-            </a>
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <!-- PROFILE IMAGE -->
-      <div class="portrait-frame" id="portraitFrame">
-
-        <div class="tape"></div>
-
-        <img src="images/new_img.jpeg"
-             alt="Abdullah Ahmed Bhatti"
-             onerror="this.parentElement.classList.add('empty')">
-
-        <div class="portrait-placeholder">
-          add<br>
-          images/new_img.jpeg<br>
-          here
-        </div>
-
-      </div>
-
-    </div>
-
+  <div class="tabstrip">
+    <a href="#experience" class="tab active">experience.cpp</a>
+    <a href="#projects" class="tab">projects.cpp</a>
+    <a href="#skills" class="tab">skills.h</a>
+    <a href="#education" class="tab">education.md</a>
+    <a href="#contact" class="tab">contact.sh</a>
   </div>
 
+  <div class="content">
 
-  <section id="experience">
+    <section class="hero">
+      <div class="code-block">
+        <div class="cline"><span class="txt c-comment">/**</span></div>
+        <div class="cline"><span class="txt c-comment">&nbsp;* Abdullah Ahmed Bhatti</span></div>
+        <div class="cline"><span class="txt c-comment">&nbsp;* Computer Engineer: AI systems and embedded hardware</span></div>
+        <div class="cline hl-cyan"><span class="txt c-comment">&nbsp;* Based in Rawalpindi and Islamabad, Pakistan</span></div>
+        <div class="cline"><span class="txt c-comment">&nbsp;*/</span></div>
+      </div>
 
-    <h2 class="s-head">Experience</h2>
+      <div class="hero-row">
+        <div class="hero-text">
+          <p class="lede">I graduated in Computer Engineering from Air University, and I've spent the last couple of years going back and forth between two worlds that don't usually share a desk: training vision transformers to catch deepfakes, and hand-laying transistors for a full adder in Cadence. <em>I like it better when a project makes me do both.</em><span class="cursor"></span></p>
+          <p class="lede">Looking for work in applied AI, ML engineering, embedded systems, or software dev: somewhere I can be useful on day one, not just in the interview.</p>
 
-    <div class="entry">
+          <div class="cta-row">
+            <a class="btn btn-fill" href="mailto:abdullah.a.bhatti72@gmail.com">&#9654; Email Me</a>
+            <a class="btn btn-stroke" href="resume.pdf" download>Download CV</a>
+          </div>
 
-      <div class="entry-top">
+          <div class="contact-list">
+            <span><a href="mailto:abdullah.a.bhatti72@gmail.com">abdullah.a.bhatti72@gmail.com</a></span>
+            <span class="sep">/</span>
+            <span><a href="tel:+923368888935">+92 336 8888935</a></span>
+            <span class="sep">/</span>
+            <span><a href="https://github.com/AAB-69" target="_blank" rel="noopener">github.com/AAB-69</a></span>
+            <span class="sep">/</span>
+            <span><a href="https://linkedin.com/in/abdullah-ahmed-bhatti" target="_blank" rel="noopener">linkedin</a></span>
+          </div>
+        </div>
 
+        <div class="portrait-frame" id="portraitFrame">
+          <span class="portrait-label">// preview</span>
+          <span class="c2"></span><span class="c3"></span>
+          <img src="profile.jpg" alt="Abdullah Ahmed Bhatti" onerror="this.parentElement.classList.add('empty')">
+          <div class="portrait-placeholder">add<br>profile.jpg<br>here</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <h2 class="s-head"><span class="num">01</span><span class="title">experience</span></h2>
+      <div class="code-block">
+        <div class="cline"><span class="txt c-text">void internship() {</span></div>
+        <div class="cline hl-cyan"><span class="txt indent c-text"><span class="c-key">string</span> role = <span class="c-str">"AI &amp; Cybersecurity Intern"</span>;</span></div>
+        <div class="cline"><span class="txt indent c-text"><span class="c-key">string</span> company = <span class="c-str">"AgriStreams, Cybersecurity Zone, NSTP, NUST Islamabad"</span>;</span></div>
+        <div class="cline"><span class="txt indent c-text"><span class="c-key">string</span> duration = <span class="c-str">"Jun to Aug 2025"</span>;</span></div>
+        <div class="cline"><span class="txt indent c-comment">// Worked in the Cybersecurity Department on network monitoring, security analysis, and vulnerability assessment.</span></div>
+        <div class="cline"><span class="txt indent c-comment">// Helped run day-to-day security operations and picked up how enterprise security workflows actually work in practice.</span></div>
+        <div class="cline"><span class="txt indent c-comment">// Contributed to analysis around Advanced Malware Detection (AMD) and security incident identification.</span></div>
+        <div class="cline"><span class="txt indent c-comment">// Got hands-on exposure to AI-based security tooling in a genuinely research-driven environment.</span></div>
+        <div class="cline"><span class="txt c-text">}</span></div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2 class="s-head"><span class="num">02</span><span class="title">projects</span></h2>
+
+      <div class="proj-featured">
+        <div class="s-tag">final year project</div>
+        <div class="code-block">
+          <div class="cline"><span class="txt c-punc">{</span></div>
+          <div class="cline"><span class="txt indent"><span class="c-key">title</span><span class="c-punc">:</span> <span class="c-str">"Deepfake Detection in Multimedia Content"</span><span class="c-punc">,</span></span></div>
+          <div class="cline hl-red"><span class="txt indent"><span class="c-key">result</span><span class="c-punc">:</span> <span class="c-str">"90%+ accuracy across diverse real-world datasets"</span><span class="c-punc">,</span></span></div>
+          <div class="cline"><span class="txt indent"><span class="c-key">summary</span><span class="c-punc">:</span> <span class="c-str">"A multi-model ensemble: a ViT-B/16 branch reads frame-level visual artifacts, while a BiLSTM + Transformer Encoder branch looks at motion sequences for temporal inconsistency. Ran on GPU to keep inference fast without ballooning compute."</span><span class="c-punc">,</span></span></div>
+          <div class="cline"><span class="txt indent"><span class="c-key">stack</span><span class="c-punc">:</span> <span class="c-punc">[</span><span class="c-str">"PyTorch"</span><span class="c-punc">,</span> <span class="c-str">"OpenCV"</span><span class="c-punc">,</span> <span class="c-str">"Transformers"</span><span class="c-punc">]</span></span></div>
+          <div class="cline"><span class="txt c-punc">}</span></div>
+        </div>
+      </div>
+
+      <div class="proj-lite">
+        <div class="proj-lite-title"><span class="punc">&gt;</span>NLP Architecture Progression: Sentiment Classification</div>
+        <p class="proj-lite-desc">Walked the same sentiment-classification problem through three architectures (vanilla RNN, LSTM, Transformer) on the IMDb review dataset, to see the accuracy gains at each step for myself.</p>
+        <div class="proj-lite-stack">// stack: PyTorch, Python</div>
+      </div>
+
+      <div class="proj-lite">
+        <div class="proj-lite-title"><span class="punc">&gt;</span>VLSI Design: Transmission Gate Full Adder</div>
+        <p class="proj-lite-desc">Full adder built in transmission-gate logic instead of standard CMOS, to cut transistor count and power. Checked logic correctness, propagation delay, and power draw through simulation.</p>
+        <div class="proj-lite-stack">// stack: Cadence, Verilog</div>
+      </div>
+
+      <div class="proj-lite">
+        <div class="proj-lite-title"><span class="punc">&gt;</span>16-bit Processor in Verilog</div>
+        <p class="proj-lite-desc">A fully parameterized 16-bit processor from scratch, with a custom instruction set architecture, verified end-to-end in Vivado simulation.</p>
+        <div class="proj-lite-stack">// stack: Verilog HDL, Xilinx Vivado</div>
+      </div>
+
+      <div class="proj-lite">
+        <div class="proj-lite-title"><span class="punc">&gt;</span>Carotid Artery Ultrasound Segmentation</div>
+        <p class="proj-lite-desc">MATLAB pipeline to segment the common carotid artery in ultrasound images: median filtering, CLAHE contrast enhancement, and morphological operations, landing around a 0.84 Dice score.</p>
+        <div class="proj-lite-stack">// stack: MATLAB, image processing</div>
+      </div>
+
+      <div class="proj-lite">
+        <div class="proj-lite-title"><span class="punc">&gt;</span>Bank Management System</div>
+        <p class="proj-lite-desc">A full bank management system in C++, built around OOP principles, with ROT13 encryption for account data.</p>
+        <div class="proj-lite-stack">// stack: C++</div>
+      </div>
+
+      <div class="proj-lite">
+        <div class="proj-lite-title"><span class="punc">&gt;</span>MIPS Architecture Simulation</div>
+        <p class="proj-lite-desc">Simulated core MIPS processor behavior and pipelining, with assembly programs covering addressing, branching, and arithmetic.</p>
+        <div class="proj-lite-stack">// stack: MIPS assembly</div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <h2 class="s-head"><span class="num">03</span><span class="title">skills</span></h2>
+      <div class="code-block" style="padding: 4px 18px;">
+        <div class="cline" style="border:none;"><span class="txt skill-line"><span class="k">ml_ai</span><span class="p"> = [</span><span class="v">"PyTorch", "TensorFlow", "OpenCV", "Transformers", "Pandas", "NumPy", "Scikit-learn", "deep learning", "computer vision", "image processing", "Whisper", "Google Colab"</span><span class="p">];</span></span></div>
+        <div class="cline" style="border:none;"><span class="txt skill-line"><span class="k">languages</span><span class="p"> = [</span><span class="v">"Python", "C", "C++", "MIPS assembly", "HTML", "CSS"</span><span class="p">];</span></span></div>
+        <div class="cline" style="border:none;"><span class="txt skill-line"><span class="k">hardware_vlsi</span><span class="p"> = [</span><span class="v">"Verilog HDL (Vivado)", "Cadence", "digital logic design", "transmission gate logic", "microprocessors", "Arduino", "Proteus"</span><span class="p">];</span></span></div>
+        <div class="cline" style="border:none;"><span class="txt skill-line"><span class="k">signals_robotics</span><span class="p"> = [</span><span class="v">"DSP", "signals &amp; systems", "applied robotics", "MATLAB"</span><span class="p">];</span></span></div>
+        <div class="cline" style="border:none;"><span class="txt skill-line"><span class="k">software</span><span class="p"> = [</span><span class="v">"OOP", "data structures &amp; algorithms", "software engineering", "debugging"</span><span class="p">];</span></span></div>
+        <div class="cline" style="border:none;"><span class="txt skill-line"><span class="k">networking_db</span><span class="p"> = [</span><span class="v">"CISCO Packet Tracer", "network config &amp; troubleshooting", "Ubuntu/Linux", "MS SQL Server"</span><span class="p">];</span></span></div>
+      </div>
+    </section>
+
+    <section id="education">
+      <h2 class="s-head"><span class="num">04</span><span class="title">education</span></h2>
+      <div class="edu">
         <div>
-          <div class="entry-role">
-            AI &amp; Cybersecurity Intern
-          </div>
-
-          <div class="entry-org">
-            AgriStreams — Cybersecurity Zone, NSTP, NUST Islamabad
-          </div>
+          <div class="edu-name">B.Sc. Computer Engineering</div>
+          <div class="edu-school">Air University, Islamabad · CGPA 3.04 · ML, computer vision &amp; digital hardware design</div>
         </div>
-
-        <div class="entry-date">
-          Jun – Aug 2025
+        <div class="edu-date">2022 to 2026</div>
+      </div>
+      <div class="edu">
+        <div>
+          <div class="edu-name">Intermediate in Computer Science</div>
+          <div class="edu-school">Punjab Group of Colleges, Islamabad</div>
         </div>
-
+        <div class="edu-date">2022</div>
       </div>
-
-
-      <ul class="plain">
-
-        <li>
-          Worked in the Cybersecurity Department on network monitoring, security analysis, and vulnerability assessment.
-        </li>
-
-        <li>
-          Helped run day-to-day security operations and picked up how enterprise security workflows actually work in practice.
-        </li>
-
-        <li>
-          Contributed to analysis around Advanced Malware Detection (AMD) and security incident identification.
-        </li>
-
-        <li>
-          Got hands-on exposure to AI-based security tooling in a genuinely research-driven environment.
-        </li>
-
-      </ul>
-
-    </div>
-
-  </section>
-
-
-  <section id="projects">
-
-    <h2 class="s-head">Projects</h2>
-
-
-    <div class="proj">
-
-      <div class="proj-head">
-
-        <span class="proj-title proj-flag">
-
-          Deepfake Detection in Multimedia Content
-
-          <svg class="circle"
-               viewBox="0 0 300 42"
-               preserveAspectRatio="none"
-               aria-hidden="true">
-
-            <ellipse cx="150"
-                     cy="21"
-                     rx="145"
-                     ry="17"
-                     fill="none"
-                     stroke="#a2321c"
-                     stroke-width="1.6"
-                     opacity="0.55"/>
-
-          </svg>
-
-        </span>
-
-      </div>
-
-
-      <div class="proj-result">
-        final year project — 90%+ accuracy across diverse real-world datasets
-      </div>
-
-
-      <p>
-        A multi-model ensemble for catching deepfake video: a ViT-B/16 branch reads frame-level visual artifacts, while a BiLSTM + Transformer Encoder branch looks at motion sequences for temporal inconsistency. Ran on GPU to keep inference fast without ballooning compute.
-      </p>
-
-
-      <div class="stack">
-        Built with PyTorch, OpenCV, and Transformers.
-      </div>
-
-    </div>
-
-
-    <div class="proj">
-
-      <div class="proj-title">
-        NLP Architecture Progression — Sentiment Classification
-      </div>
-
-      <p>
-        Walked the same sentiment-classification problem through three architectures — vanilla RNN, LSTM, Transformer — on the IMDb review dataset, to see the accuracy gains at each step for myself.
-      </p>
-
-      <div class="stack">
-        Built with PyTorch and Python.
-      </div>
-
-    </div>
-
-
-    <div class="proj">
-
-      <div class="proj-title">
-        VLSI Design — Transmission Gate Full Adder
-      </div>
-
-      <p>
-        Full adder built in transmission-gate logic instead of standard CMOS, to cut transistor count and power. Checked logic correctness, propagation delay, and power draw through simulation.
-      </p>
-
-      <div class="stack">
-        Cadence, Verilog.
-      </div>
-
-    </div>
-
-
-    <div class="proj">
-
-      <div class="proj-title">
-        16-bit Processor — Verilog
-      </div>
-
-      <p>
-        A fully parameterized 16-bit processor from scratch, with a custom instruction set architecture, verified end-to-end in Vivado simulation.
-      </p>
-
-      <div class="stack">
-        Verilog HDL, Xilinx Vivado.
-      </div>
-
-    </div>
-
-
-    <div class="proj">
-
-      <div class="proj-title">
-        Carotid Artery Ultrasound Segmentation
-      </div>
-
-      <p>
-        MATLAB pipeline to segment the common carotid artery in ultrasound images — median filtering, CLAHE contrast enhancement, morphological ops — landed around a 0.84 Dice score.
-      </p>
-
-      <div class="stack">
-        MATLAB, image processing.
-      </div>
-
-    </div>
-
-
-    <div class="proj">
-
-      <div class="proj-title">
-        Bank Management System
-      </div>
-
-      <p>
-        A full bank management system in C++, built around OOP principles, with ROT13 encryption for account data.
-      </p>
-
-      <div class="stack">
-        C++.
-      </div>
-
-    </div>
-
-
-    <div class="proj">
-
-      <div class="proj-title">
-        MIPS Architecture Simulation
-      </div>
-
-      <p>
-        Simulated core MIPS processor behavior and pipelining, with assembly programs covering addressing, branching, and arithmetic.
-      </p>
-
-      <div class="stack">
-        MIPS assembly.
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section id="skills">
-
-    <h2 class="s-head">Skills</h2>
-
-
-    <div class="skill-row">
-
-      <div class="skill-cat">
-        ML &amp; AI
-      </div>
-
-      <div class="skill-vals">
-        PyTorch, TensorFlow, OpenCV, Transformers, Pandas, NumPy, Scikit-learn, deep learning, computer vision, image processing, Whisper, Google Colab
-      </div>
-
-    </div>
-
-
-    <div class="skill-row">
-
-      <div class="skill-cat">
-        Languages
-      </div>
-
-      <div class="skill-vals">
-        Python, C, C++, MIPS assembly, HTML, CSS
-      </div>
-
-    </div>
-
-
-    <div class="skill-row">
-
-      <div class="skill-cat">
-        Hardware &amp; VLSI
-      </div>
-
-      <div class="skill-vals">
-        Verilog HDL (Vivado), Cadence, digital logic design, transmission gate logic, microprocessors, Arduino, Proteus
-      </div>
-
-    </div>
-
-
-    <div class="skill-row">
-
-      <div class="skill-cat">
-        Signals &amp; robotics
-      </div>
-
-      <div class="skill-vals">
-        DSP, signals &amp; systems, applied robotics, MATLAB
-      </div>
-
-    </div>
-
-
-    <div class="skill-row">
-
-      <div class="skill-cat">
-        Software
-      </div>
-
-      <div class="skill-vals">
-        OOP, data structures &amp; algorithms, software engineering principles, debugging
-      </div>
-
-    </div>
-
-
-    <div class="skill-row">
-
-      <div class="skill-cat">
-        Networking &amp; DB
-      </div>
-
-      <div class="skill-vals">
-        CISCO Packet Tracer, network config &amp; troubleshooting, Ubuntu/Linux, MS SQL Server
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section id="education">
-
-    <h2 class="s-head">Education</h2>
-
-
-    <div class="edu">
-
-      <div>
-
-        <div class="edu-name">
-          B.Sc. Computer Engineering
+      <div class="edu">
+        <div>
+          <div class="edu-name">Matriculation</div>
+          <div class="edu-school">Silver Oaks School, Islamabad</div>
         </div>
-
-        <div class="edu-school">
-          Air University, Islamabad · CGPA 3.04 · ML, computer vision &amp; digital hardware design
+        <div class="edu-date">2019</div>
+      </div>
+      <div class="edu">
+        <div>
+          <div class="edu-name">Microsoft Office Specialist (MOS)</div>
+          <div class="edu-school">Microsoft</div>
         </div>
-
+        <div class="edu-date"></div>
       </div>
+    </section>
 
-      <div class="edu-date">
-        2022 – 2026
-      </div>
-
-    </div>
-
-
-    <div class="edu">
-
-      <div>
-
-        <div class="edu-name">
-          Intermediate in Computer Science
+    <section>
+      <div class="cols">
+        <div>
+          <h2 class="s-head"><span class="num">05</span><span class="title">volunteer</span></h2>
+          <ul class="dash">
+            <li><span class="c-comment">//</span> Academic support and mentorship at Pehli Kiran School</li>
+            <li><span class="c-comment">//</span> Ration drives and food distribution, Rehmani Free Dastarkhawan, Rawalpindi</li>
+            <li><span class="c-comment">//</span> Community cleanup, F-9 Park, Islamabad</li>
+          </ul>
         </div>
-
-        <div class="edu-school">
-          Punjab Group of Colleges, Islamabad
+        <div>
+          <h2 class="s-head"><span class="num">06</span><span class="title">languages</span></h2>
+          <ul class="dash">
+            <li><span class="c-comment">//</span> English: fluent</li>
+            <li><span class="c-comment">//</span> Urdu: native</li>
+          </ul>
         </div>
-
       </div>
+    </section>
 
-      <div class="edu-date">
-        2022
+    <footer id="contact">
+      <h2 class="s-head"><span class="num">07</span><span class="title">contact</span></h2>
+      <div class="term">
+        <div class="ln"><span class="prompt">$</span><span class="out">mail abdullah.a.bhatti72@gmail.com</span></div>
+        <div class="ln"><span class="prompt">$</span><span class="out">call +92 336 8888935</span></div>
+        <div class="ln" style="margin-bottom:0;"><span class="prompt">$</span><span class="out">echo "based in Rawalpindi and Islamabad"</span><span class="cursor"></span></div>
       </div>
-
-    </div>
-
-
-    <div class="edu">
-
-      <div>
-
-        <div class="edu-name">
-          Matriculation
-        </div>
-
-        <div class="edu-school">
-          Silver Oaks School, Islamabad
-        </div>
-
+      <div class="cta-row">
+        <a class="btn btn-fill" href="mailto:abdullah.a.bhatti72@gmail.com">&#9654; Email Me</a>
+        <a class="btn btn-stroke" href="resume.pdf" download>Download CV</a>
       </div>
+    </footer>
 
-      <div class="edu-date">
-        2019
-      </div>
-
-    </div>
-
-
-    <div class="edu">
-
-      <div>
-
-        <div class="edu-name">
-          Microsoft Office Specialist (MOS)
-        </div>
-
-        <div class="edu-school">
-          Microsoft
-        </div>
-
-      </div>
-
-      <div class="edu-date"></div>
-
-    </div>
-
-  </section>
-
-
-  <section>
-
-    <div class="cols">
-
-      <div>
-
-        <h2 class="s-head">
-          Volunteer
-        </h2>
-
-        <ul class="dash">
-
-          <li>
-            Academic support and mentorship at Pehli Kiran School
-          </li>
-
-          <li>
-            Ration drives and food distribution, Rehmani Free Dastarkhawan, Rawalpindi
-          </li>
-
-          <li>
-            Community cleanup, F-9 Park, Islamabad
-          </li>
-
-        </ul>
-
-      </div>
-
-
-      <div>
-
-        <h2 class="s-head">
-          Languages
-        </h2>
-
-        <ul class="dash">
-
-          <li>
-            English — fluent
-          </li>
-
-          <li>
-            Urdu — native
-          </li>
-
-        </ul>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <footer>
-
-    <p>
-      That's most of it on paper — happy to talk through any of it in more depth. Reach me at
-      <a href="mailto:abdullah.a.bhatti72@gmail.com">
-        abdullah.a.bhatti72@gmail.com
-      </a>
-      or
-      <a href="tel:+923368888935">
-        +92 336 8888935
-      </a>.
-    </p>
-
-    <div class="sign">
-      <span class="name">Abdullah</span>, Rawalpindi &amp; Islamabad
-    </div>
-
-  </footer>
-
+  </div>
 </div>
 
-
 <script>
-
-  // live local time, Rawalpindi / Islamabad (Asia/Karachi)
-
   const timeEl = document.getElementById('localTime');
-
   function updateClock(){
-
-    const now = new Date();
-
-    const fmt = new Intl.DateTimeFormat('en-GB', {
-      timeZone: 'Asia/Karachi',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-
-    timeEl.textContent = '· ' + fmt.format(now) + ' local';
-
+    const fmt = new Intl.DateTimeFormat('en-GB', { timeZone:'Asia/Karachi', hour:'2-digit', minute:'2-digit' });
+    timeEl.textContent = 'UTF-8 · Asia/Karachi ' + fmt.format(new Date());
   }
-
   updateClock();
-
   setInterval(updateClock, 30000);
 
-
-  // draw the ink circle around the featured project once it's in view
-
-  const flag = document.querySelector('.proj-flag');
-
-  if (flag) {
-
-    const io = new IntersectionObserver(([entry]) => {
-
-      if (entry.isIntersecting) {
-        flag.classList.add('in-view');
-        io.disconnect();
+  // active tab highlight on scroll
+  const tabs = document.querySelectorAll('.tab');
+  const targets = ['experience','projects','skills','education','contact'].map(id => document.getElementById(id));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        tabs.forEach(t => t.classList.toggle('active', t.getAttribute('href') === '#' + id));
       }
-
-    }, {
-      threshold: 0.6
     });
-
-    io.observe(flag);
-
-  }
-
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  targets.forEach(t => t && io.observe(t));
 </script>
-
 </body>
 </html>

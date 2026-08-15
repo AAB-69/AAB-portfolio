@@ -38,26 +38,26 @@
 
   body{
     margin:0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'JetBrains Mono',monospace;
     font-size:15px;
     line-height:1.7;
   }
 
   a{
-    color: var(--cyan);
+    color:var(--cyan);
     text-decoration:none;
   }
 
   ::selection{
-    background: var(--cyan);
-    color: #05171a;
+    background:var(--cyan);
+    color:#05171a;
   }
 
   :focus-visible{
-    outline: 1.5px solid var(--cyan);
-    outline-offset: 2px;
+    outline:1.5px solid var(--cyan);
+    outline-offset:2px;
   }
 
   ::-webkit-scrollbar{
@@ -65,34 +65,34 @@
   }
 
   ::-webkit-scrollbar-track{
-    background: var(--bg);
+    background:var(--bg);
   }
 
   ::-webkit-scrollbar-thumb{
-    background: var(--rule);
+    background:var(--rule);
     border-radius:6px;
     border:2px solid var(--bg);
   }
 
   ::-webkit-scrollbar-thumb:hover{
-    background: var(--line-num);
+    background:var(--line-num);
   }
 
   .page{
-    max-width: 760px;
+    max-width:760px;
     margin:0 auto;
   }
 
-  /* title bar, like an editor window chrome */
+  /* title bar */
 
   .titlebar{
-    background: var(--bg-tab);
+    background:var(--bg-tab);
     border-bottom:1px solid var(--rule);
     display:flex;
     align-items:center;
-    padding: 10px 18px;
+    padding:10px 18px;
     gap:14px;
-    position: sticky;
+    position:sticky;
     top:0;
     z-index:20;
   }
@@ -125,68 +125,68 @@
     flex:1;
     text-align:center;
     font-size:12.5px;
-    color: var(--text-dim);
+    color:var(--text-dim);
   }
 
   .titlebar .clock{
     font-size:11.5px;
-    color: var(--text-faint);
+    color:var(--text-faint);
     white-space:nowrap;
   }
 
-  /* tab strip nav */
+  /* tab strip */
 
   .tabstrip{
     display:flex;
     overflow-x:auto;
-    background: var(--bg-tab);
+    background:var(--bg-tab);
     border-bottom:1px solid var(--rule);
-    position: sticky;
+    position:sticky;
     top:41px;
     z-index:19;
   }
 
   .tab{
-    padding: 11px 18px;
+    padding:11px 18px;
     font-size:12.5px;
-    color: var(--text-faint);
+    color:var(--text-faint);
     border-right:1px solid var(--rule);
     white-space:nowrap;
-    transition: color .15s ease, background .15s ease;
-    border-bottom: 2px solid transparent;
+    transition:color .15s ease,background .15s ease;
+    border-bottom:2px solid transparent;
   }
 
   .tab:hover{
-    color: var(--text);
-    background: rgba(255,255,255,0.02);
+    color:var(--text);
+    background:rgba(255,255,255,0.02);
   }
 
   .tab.active{
-    color: var(--cyan);
-    border-bottom-color: var(--cyan);
-    background: var(--bg);
+    color:var(--cyan);
+    border-bottom-color:var(--cyan);
+    background:var(--bg);
   }
 
   .content{
-    padding: 44px 22px 90px;
+    padding:44px 22px 90px;
   }
 
-  /* generic code-block with line-number gutter */
+  /* code block */
 
   .code-block{
-    background: var(--bg-panel);
+    background:var(--bg-panel);
     border:1px solid var(--rule);
     border-radius:6px;
     overflow:hidden;
-    counter-reset: line;
-    margin: 0 0 18px;
+    counter-reset:line;
+    margin:0 0 18px;
   }
 
   .cline{
-    counter-increment: line;
+    counter-increment:line;
     display:flex;
     align-items:flex-start;
-    padding: 7px 16px 7px 0;
+    padding:7px 16px 7px 0;
     border-bottom:1px solid rgba(255,255,255,0.03);
   }
 
@@ -195,23 +195,23 @@
   }
 
   .cline::before{
-    content: counter(line);
+    content:counter(line);
     width:34px;
     flex-shrink:0;
     text-align:right;
     margin-right:16px;
-    color: var(--line-num);
+    color:var(--line-num);
     font-size:12px;
     user-select:none;
     padding-top:1px;
   }
 
   .cline.hl-cyan{
-    background: var(--hl-cyan);
+    background:var(--hl-cyan);
   }
 
   .cline.hl-red{
-    background: var(--hl-red);
+    background:var(--hl-red);
   }
 
   .cline .txt{
@@ -220,39 +220,39 @@
   }
 
   .c-comment{
-    color: var(--green);
+    color:var(--green);
   }
 
   .c-key{
-    color: var(--cyan);
+    color:var(--cyan);
   }
 
   .c-str{
-    color: var(--yellow);
+    color:var(--yellow);
   }
 
   .c-punc{
-    color: var(--text-faint);
+    color:var(--text-faint);
   }
 
   .c-text{
-    color: var(--text);
+    color:var(--text);
   }
 
   /* hero */
 
   .hero{
-    margin-bottom: 20px;
+    margin-bottom:20px;
   }
 
   .cursor{
     display:inline-block;
     width:8px;
     height:1em;
-    background: var(--cyan);
-    vertical-align: text-bottom;
+    background:var(--cyan);
+    vertical-align:text-bottom;
     margin-left:2px;
-    animation: blink 1s step-end infinite;
+    animation:blink 1s step-end infinite;
   }
 
   @keyframes blink{
@@ -261,7 +261,7 @@
     }
   }
 
-  @media (prefers-reduced-motion: reduce){
+  @media (prefers-reduced-motion:reduce){
     .cursor{
       animation:none;
     }
@@ -281,14 +281,14 @@
   }
 
   .lede{
-    color: var(--text-dim);
+    color:var(--text-dim);
     font-size:14.5px;
     max-width:60ch;
-    margin: 0 0 14px;
+    margin:0 0 14px;
   }
 
   .lede em{
-    color: var(--text);
+    color:var(--text);
     font-style:normal;
   }
 
@@ -296,7 +296,7 @@
     display:flex;
     gap:12px;
     flex-wrap:wrap;
-    margin: 24px 0 6px;
+    margin:24px 0 6px;
   }
 
   .btn{
@@ -305,12 +305,12 @@
     padding:11px 20px;
     border-radius:4px;
     border:1px solid var(--cyan);
-    transition: all .15s ease;
+    transition:all .15s ease;
     display:inline-block;
   }
 
   .btn-fill{
-    background: var(--cyan);
+    background:var(--cyan);
     color:#052226;
     font-weight:700;
   }
@@ -320,40 +320,40 @@
   }
 
   .btn-stroke{
-    color: var(--cyan);
-    border-color: var(--rule);
+    color:var(--cyan);
+    border-color:var(--rule);
   }
 
   .btn-stroke:hover{
-    border-color: var(--cyan);
-    background: var(--hl-cyan);
+    border-color:var(--cyan);
+    background:var(--hl-cyan);
   }
 
   .contact-list{
     margin-top:24px;
     font-size:12.5px;
-    color: var(--text-faint);
+    color:var(--text-faint);
     display:flex;
     flex-wrap:wrap;
     gap:6px 0;
   }
 
   .contact-list a{
-    color: var(--text-dim);
+    color:var(--text-dim);
     border-bottom:1px dotted var(--rule);
   }
 
   .contact-list a:hover{
-    color: var(--cyan);
-    border-color: var(--cyan);
+    color:var(--cyan);
+    border-color:var(--cyan);
   }
 
   .sep{
     margin:0 10px;
-    color: var(--text-faint);
+    color:var(--text-faint);
   }
 
-  /* portrait: viewfinder style */
+  /* portrait */
 
   .portrait-frame{
     width:144px;
@@ -361,7 +361,7 @@
     flex-shrink:0;
     position:relative;
     border:1px dashed var(--rule);
-    background: var(--bg-panel);
+    background:var(--bg-panel);
     margin-top:4px;
   }
 
@@ -373,7 +373,7 @@
     position:absolute;
     width:14px;
     height:14px;
-    border-color: var(--cyan);
+    border-color:var(--cyan);
     border-style:solid;
     border-width:0;
   }
@@ -411,7 +411,7 @@
     top:-20px;
     left:0;
     font-size:10.5px;
-    color: var(--green);
+    color:var(--green);
   }
 
   .portrait-frame img{
@@ -434,7 +434,7 @@
     text-align:center;
     font-size:10px;
     line-height:1.5;
-    color: var(--text-faint);
+    color:var(--text-faint);
     padding:10px;
   }
 
@@ -445,37 +445,37 @@
   /* sections */
 
   section{
-    margin: 56px 0;
-    scroll-margin-top: 90px;
+    margin:56px 0;
+    scroll-margin-top:90px;
   }
 
   .s-head{
     display:flex;
     align-items:baseline;
     gap:12px;
-    margin: 0 0 20px;
+    margin:0 0 20px;
   }
 
   .s-head .num{
-    color: var(--text-faint);
+    color:var(--text-faint);
     font-size:13px;
   }
 
   .s-head .title{
     font-weight:700;
     font-size:18px;
-    color: var(--text);
+    color:var(--text);
   }
 
   .s-head .title::before{
     content:"# ";
-    color: var(--text-faint);
+    color:var(--text-faint);
   }
 
-  /* experience function block */
+  /* experience */
 
   .fn-line{
-    color: var(--text);
+    color:var(--text);
   }
 
   .fn-line .c-key{
@@ -486,11 +486,11 @@
     padding-left:20px;
   }
 
-  /* featured project object */
+  /* featured project */
 
   .proj-featured .s-tag{
     font-size:11px;
-    color: var(--cyan);
+    color:var(--cyan);
     border:1px solid var(--rule);
     border-radius:3px;
     padding:2px 8px;
@@ -498,40 +498,40 @@
     display:inline-block;
   }
 
-  /* lighter projects */
+  /* projects */
 
   .proj-lite{
-    background: var(--bg-panel);
+    background:var(--bg-panel);
     border:1px solid var(--rule);
     border-radius:6px;
-    padding: 16px 18px;
+    padding:16px 18px;
     margin-bottom:12px;
   }
 
   .proj-lite-title{
-    color: var(--text);
+    color:var(--text);
     font-weight:700;
     font-size:14.5px;
     margin-bottom:8px;
   }
 
   .proj-lite-title .punc{
-    color: var(--cyan);
+    color:var(--cyan);
     margin-right:6px;
   }
 
   .proj-lite-desc{
-    color: var(--text-dim);
+    color:var(--text-dim);
     font-size:13.5px;
     margin:0 0 10px;
   }
 
   .proj-lite-stack{
     font-size:12.5px;
-    color: var(--green);
+    color:var(--green);
   }
 
-  /* skills as syntax-highlighted arrays */
+  /* skills */
 
   .skill-line{
     margin-bottom:10px;
@@ -539,15 +539,15 @@
   }
 
   .skill-line .k{
-    color: var(--cyan);
+    color:var(--cyan);
   }
 
   .skill-line .p{
-    color: var(--text-faint);
+    color:var(--text-faint);
   }
 
   .skill-line .v{
-    color: var(--yellow);
+    color:var(--yellow);
   }
 
   /* education */
@@ -566,24 +566,24 @@
   }
 
   .edu-name{
-    color: var(--text);
+    color:var(--text);
     font-weight:700;
     font-size:14px;
   }
 
   .edu-school{
-    color: var(--text-dim);
+    color:var(--text-dim);
     font-size:12.5px;
     margin-top:3px;
   }
 
   .edu-date{
-    color: var(--text-faint);
+    color:var(--text-faint);
     font-size:12px;
     white-space:nowrap;
   }
 
-  /* two col */
+  /* two columns */
 
   .cols{
     display:grid;
@@ -606,7 +606,7 @@
 
   ul.dash li{
     padding:7px 0;
-    color: var(--text-dim);
+    color:var(--text-dim);
     font-size:13.5px;
   }
 
@@ -614,7 +614,7 @@
     margin-right:6px;
   }
 
-  /* footer terminal */
+  /* footer */
 
   footer{
     margin-top:70px;
@@ -623,7 +623,7 @@
   }
 
   .term{
-    background: var(--bg-panel);
+    background:var(--bg-panel);
     border:1px solid var(--rule);
     border-radius:6px;
     padding:18px 20px;
@@ -635,17 +635,17 @@
   }
 
   .term .prompt{
-    color: var(--cyan);
+    color:var(--cyan);
     margin-right:8px;
   }
 
   .term .out{
-    color: var(--text-dim);
+    color:var(--text-dim);
   }
 
   @media (max-width:560px){
     .content{
-      padding: 34px 16px 70px;
+      padding:34px 16px 70px;
     }
 
     .titlebar{
@@ -660,6 +660,7 @@
 <div class="page">
 
   <div class="titlebar">
+
     <div class="dots">
       <span class="dot red"></span>
       <span class="dot yellow"></span>
@@ -671,6 +672,7 @@
     </div>
 
     <div class="clock mono" id="localTime"></div>
+
   </div>
 
 
@@ -759,9 +761,10 @@
               &#9654; Email Me
             </a>
 
+            <!-- CV FILE: Abdullah Bhatti - CV.pdf -->
             <a class="btn btn-stroke"
-               href="Abdullah Bhatti - CV.pdf"
-               download>
+               href="./Abdullah%20Bhatti%20-%20CV.pdf"
+               download="Abdullah_Ahmed_Bhatti_CV.pdf">
               Download CV
             </a>
 
@@ -819,12 +822,10 @@
           <span class="c2"></span>
           <span class="c3"></span>
 
-          <!-- Image stored in the GitHub /images folder -->
           <img src="images/new_img.jpeg"
                alt="Abdullah Ahmed Bhatti"
                onerror="this.parentElement.classList.add('empty')">
 
-          <!-- Fallback if the image cannot be loaded -->
           <div class="portrait-placeholder">
             add<br>
             images/new_img.jpeg<br>
@@ -937,9 +938,7 @@
         <div class="code-block">
 
           <div class="cline">
-            <span class="txt c-punc">
-              {
-            </span>
+            <span class="txt c-punc">{</span>
           </div>
 
           <div class="cline">
@@ -990,9 +989,7 @@
           </div>
 
           <div class="cline">
-            <span class="txt c-punc">
-              }
-            </span>
+            <span class="txt c-punc">}</span>
           </div>
 
         </div>
@@ -1118,7 +1115,7 @@
       </h2>
 
 
-      <div class="code-block" style="padding: 4px 18px;">
+      <div class="code-block" style="padding:4px 18px;">
 
         <div class="cline" style="border:none;">
           <span class="txt skill-line">
@@ -1378,9 +1375,10 @@
           &#9654; Email Me
         </a>
 
+        <!-- CV FILE: Abdullah Bhatti - CV.pdf -->
         <a class="btn btn-stroke"
-           href="Abdullah Bhatti - CV.pdf"
-           download>
+           href="./Abdullah%20Bhatti%20-%20CV.pdf"
+           download="Abdullah_Ahmed_Bhatti_CV.pdf">
           Download CV
         </a>
 
@@ -1415,7 +1413,7 @@
   setInterval(updateClock, 30000);
 
 
-  // active tab highlight on scroll
+  // Active tab highlight on scroll
 
   const tabs = document.querySelectorAll('.tab');
 
@@ -1432,7 +1430,7 @@
 
     entries.forEach(e => {
 
-      if (e.isIntersecting) {
+      if(e.isIntersecting){
 
         const id = e.target.id;
 
@@ -1448,7 +1446,7 @@
     });
 
   }, {
-    rootMargin: '-45% 0px -50% 0px'
+    rootMargin:'-45% 0px -50% 0px'
   });
 
 
